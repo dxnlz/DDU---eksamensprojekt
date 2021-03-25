@@ -81,6 +81,19 @@ module.exports.listen = () => {
                             client.end();
                         });
                     }
+                    if (message.toString() == "all") {
+                        
+                        const { Client } = require('pg');
+
+                        const query_update = `
+                        SELECT * FROM test
+                        `;
+
+                        client.query(query_update, (err, res) => {
+                                console.log(res.rows);
+                            client.end();
+                        });
+                    }
                 })
             }
         })
