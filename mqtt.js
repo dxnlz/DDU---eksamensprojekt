@@ -4,108 +4,107 @@ module.exports.listen = () => {
 
     client.on('connect', function () {
         client.subscribe('esp/test', { qos: 0 }, function (err) {
-            if (!err) {
-                client.on('message', (topic, message, packet) => {
-                    console.log('Received Message: ' + message.toString() + '\nOn topic: ' + topic)
+            if (err)
+                throw err;
+            client.on('message', (topic, message, packet) => {
+                console.log('Received Message: ' + message.toString() + '\nOn topic: ' + topic)
+                const { Client } = require('pg');
+                const client = new Client({
+                    user: 'postgres',
+                    host: 'localhost',
+                    database: 'webshop',
+                    password: 'postgres',
+                    port: 5432,
+                });
+
+                client.connect();
+
+                const string = message.toString();
+
+                if (string.includes("0001") && string.includes("Incoming") || string.includes("0001") && string.includes("incoming")) {
+
                     const { Client } = require('pg');
-                    const client = new Client({
-                        user: 'postgres',
-                        host: 'localhost',
-                        database: 'webshop',
-                        password: 'postgres',
-                        port: 5432,
+
+                    const query_update = `
+                        UPDATE test
+                        SET stock = ${count}
+                        WHERE productno = 1
+                        `;
+
+                    client.query(query_update, (err, res) => {
+                        console.log('Data update successful');
+                        client.end();
                     });
+                }
 
-                    client.connect();
+                if (string.includes("0002") && string.includes("Incoming") || string.includes("0002") && string.includes("incoming")) {
 
-                    const string = message.toString();
+                    const { Client } = require('pg');
 
-                    if (string.includes("0001") && string.includes("Incoming") || string.includes("0001") && string.includes("incoming")) {
-                        
-                        const { Client } = require('pg');
-
-                        const query_update = `
-                        UPDATE test
-                        SET stock = ${count}
-                        WHERE productno = 1
-                        `;
-
-                        client.query(query_update, (err, res) => {
-                            console.log('Data update successful');
-                            client.end();
-                        });
-                    }
-                    
-                    if (string.includes("0002") && string.includes("Incoming") || string.includes("0002") && string.includes("incoming")) {
-                        
-                        const { Client } = require('pg');
-
-                        const query_update = `
+                    const query_update = `
                         UPDATE test
                         SET stock = ${count}
                         WHERE productno = 2
                         `;
 
-                        client.query(query_update, (err, res) => {
-                            console.log('Data update successful');
-                            client.end();
-                        });
-                    }
-                    if (string.includes("0002") && string.includes("Outgoing") || string.includes("0002") && string.includes("outgoing")) {
+                    client.query(query_update, (err, res) => {
+                        console.log('Data update successful');
+                        client.end();
+                    });
+                }
+                if (string.includes("0002") && string.includes("Outgoing") || string.includes("0002") && string.includes("outgoing")) {
 
-                        const { Client } = require('pg');
+                    const { Client } = require('pg');
 
-                        const query_update = `
+                    const query_update = `
                         UPDATE test
                         SET stock = ${count}
                         WHERE productno = 2
                         `;
 
-                        client.query(query_update, (err, res) => {
-                            console.log('Data update successful');
-                            client.end();
-                        });
-                    }
-                    if (string.includes("0001") && string.includes("Outgoing") || string.includes("0001") && string.includes("outgoing")) {
-                        
-                        const { Client } = require('pg');
+                    client.query(query_update, (err, res) => {
+                        console.log('Data update successful');
+                        client.end();
+                    });
+                }
+                if (string.includes("0001") && string.includes("Outgoing") || string.includes("0001") && string.includes("outgoing")) {
 
-                        const query_update = `
+                    const { Client } = require('pg');
+
+                    const query_update = `
                         UPDATE test
                         SET stock = ${count}
                         WHERE productno = 1
                         `;
 
-                        client.query(query_update, (err, res) => {
-                            console.log('Data update successful');
-                            client.end();
-                        });
-                    }
-                    if (message.toString() == "all") {
-                        
-                        const { Client } = require('pg');
+                    client.query(query_update, (err, res) => {
+                        console.log('Data update successful');
+                        client.end();
+                    });
+                    selectall();
+                }
+            })
 
-                        const query_update = `
-                        SELECT * FROM test
-                        `;
-
-                        client.query(query_update, (err, res) => {
-                                console.log(res.rows);
-                            client.end();
-                        });
-                    }
-                })
-            }
         })
     })
 }
 
-/*const query = `
-                        INSERT INTO test (productno, stock)
-                        VALUES (1,1)
-                        `;
+function selectall(){
+    const { Client } = require('pg');
 
-                        client.query(query, (err, res) => {
-                            console.log('Data insert successful');
-                            client.end();
-                        });*/
+    const query_select = {
+        text: 'SELECT * FROM test',
+        rowMode: 'array'
+    };
+
+    client.query(query_select).then(res => {
+
+        const data = res.rows;
+
+        console.log('all data');
+        data.forEach(row => {
+            console.log(`productno: ${row[0]} stock: ${row[1]}`);
+        })
+        client.end();
+    });
+}
