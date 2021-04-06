@@ -2,17 +2,21 @@
     box-sizing: border-box;
 }
 
+#__next {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
 html,
 body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     padding: 0;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
 }
 
 code {
