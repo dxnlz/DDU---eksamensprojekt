@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon src/server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node src/server.js"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
@@ -16,11 +16,13 @@
     "pg": "^8.5.1",
     "react": "16.13.1",
     "react-bootstrap": "^1.0.0",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "sass": "^1.32.8"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.0.9",
     "@types/next": "^9.0.0",
+    "@types/node": "^14.14.35",
     "@types/react": "^17.0.3",
     "@types/react-bootstrap": "^0.32.25",
     "@types/react-dom": "^17.0.2",
