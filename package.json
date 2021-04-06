@@ -8,6 +8,8 @@
     "start": "NODE_ENV=production node src/server.js"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "bootstrap": "^4.4.1",
     "mqtt": "^4.2.6",
     "next": "9.3.4",
@@ -17,7 +19,8 @@
     "react": "16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "16.13.1",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "styled-components": "^5.2.3"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.0.9",

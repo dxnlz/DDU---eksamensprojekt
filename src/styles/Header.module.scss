@@ -1,0 +1,19 @@
+@import "./settings/__settings";
+
+.title {
+  text-decoration: inherit;
+  color:inherit;
+  text-transform: none;
+  display: none;
+  @media screen and (min-width: 600px) {
+    display: block;
+  }
+}
+
+.menuitem {
+  text-decoration: inherit;
+  color:inherit;
+  text-transform: none;
+  font-size: medium;
+  color: "inherit";
+}
