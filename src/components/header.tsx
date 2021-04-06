@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, Typography, Button, InputBase } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, InputBase, Divider } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import styles from '../styles/Header.module.scss'
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
@@ -91,6 +91,7 @@ class Header extends Component<HeaderProps> {
         <Toolbar style={{ justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <TitleItem text="Web Shop" url="/index" />
+            <Divider orientation="vertical" flexItem style={{backgroundColor: "#ffffff00", marginLeft: "0.5rem",marginRight: "0.5rem"}}></Divider>
             <MenuItem text="Products" url="/products" path={this.props.path} />
             <MenuItem text="Search" url="/search" path={this.props.path}/>
             <MenuItem text="Admin" url="/admin" path={this.props.path} />

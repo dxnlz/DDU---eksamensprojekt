@@ -3,3 +3,32 @@
 .searchText {
   font-size: x-large;
 }
+
+.content {
+  display: flex; 
+  flex: 1;
+  align-items: stretch;
+  justify-items: stretch;
+  margin-bottom: 1rem;
+  flex-direction: row;
+}
+
+.filter {
+  display: flex;
+  flex: 1;
+  background-color: blue;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  border-radius: 4px;
+}
+
+.productGrid {
+  display: flex;
+  flex: 3;
+  background-color: red;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
