@@ -58,7 +58,7 @@ class MenuItem extends React.Component<ItemProps> {
   render() {
     const buttonDisabled = this.props.path == this.props.url;
     return (
-      <Link href={this.props.url}>
+      <Link href={this.props.url} passHref>
         <Button className={styles.menuitem} color={buttonDisabled? "inherit": "primary"} disableElevation variant="outlined" >{this.props.text}</Button>
       </Link>
     );
@@ -68,7 +68,7 @@ class MenuItem extends React.Component<ItemProps> {
 class TitleItem extends React.Component<ItemProps> {
   render() {
     return (
-      <Link href={this.props.url}>
+      <Link href={this.props.url} passHref>
         <Button className={styles.title} color="inherit" >
           <Typography variant="h5">{this.props.text}</Typography>
         </Button>
