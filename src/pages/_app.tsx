@@ -15,7 +15,6 @@ const theme = {
   ...createMuiTheme()
 }
 
-
 class App extends NextApp {
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side')

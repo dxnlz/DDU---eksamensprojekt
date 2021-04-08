@@ -5,7 +5,7 @@
 }
 
 .content {
-  display: flex; 
+  display: flex;
   flex: 1;
   align-items: stretch;
   justify-items: stretch;
@@ -13,14 +13,34 @@
   flex-direction: row;
 }
 
+.header {
+  background-color: gray;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  height: 50px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.divider {
+  background-color: white;
+  height: 2px;
+}
+
+.form {
+  padding: 15px;
+}
+
 .filter {
   display: flex;
-  flex: 1;
   background-color: blue;
-  align-items: center;
-  justify-content: center;
   margin-right: 1rem;
   border-radius: 4px;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  flex: 1;
+  flex-direction: column;
 }
 
 .productGrid {
@@ -30,5 +50,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
+.input {
+  color: white !important;
+}
