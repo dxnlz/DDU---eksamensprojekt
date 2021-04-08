@@ -3,8 +3,18 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import Slider from "../components/Slider"
 import styles from '../styles/Products.module.scss';
+import { db_req } from '../db_helper'
 
-export default class ProductPage extends Component {
+interface ICategory {
+    id: number;
+    name: string;
+}
+
+interface ProductPageProps {
+    categories: ICategory[]
+}
+
+export default class ProductPage extends Component<ProductPageProps> {
     render() {
         return (
             <>
@@ -20,33 +30,27 @@ export default class ProductPage extends Component {
                         <div className={styles.divider} />
                         <div className={styles.form}>
                             <Form>
-                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
-    <Form.Label  style={{color: "white", fontWeight: "bold"}}>Kategori: </Form.Label>
-    <Form.Control as="select" size="sm" custom>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </Form.Control>
-  </Form.Group>
-  <hr/>
-
-                                <Form.Group controlId="formBasicRangeCustom">
-                                    <Form.Label style={{color: "white", fontWeight: "bold"}}>Pris:</Form.Label>
-                                    <Slider min={0} max={69} suffix="kr." double/>
+                                <Form.Group controlId="category">
+                                    <Form.Label className={styles.label}>Kategori: </Form.Label>
+                                    <Form.Control as="select" size="sm">
+                                        {this.props.categories.map((option: ICategory)=>(
+                                        <option key={option.id} value={option.id}>{option.name}</option>))}
+                                    </Form.Control>
                                 </Form.Group>
-                                <hr/>
-                                <Form.Group controlId="formBasicRangeCustom">
-                                <Form.Label style={{color: "white", fontWeight: "bold"}}>Lager:</Form.Label>
-                                <Slider min={0} max={69} suffix="stk."/>
-                            </Form.Group>
-                            <hr/>
-
+                                <hr />
+                                <Form.Group controlId="priceRange">
+                                    <Form.Label className={styles.label}>Pris:</Form.Label>
+                                    <Slider min={0} max={69} suffix="kr." double />
+                                </Form.Group>
+                                <hr />
+                                <Form.Group controlId="stock">
+                                    <Form.Label className={styles.label}>Lager:</Form.Label>
+                                    <Slider min={0} max={69} suffix="stk." />
+                                </Form.Group>
+                                <hr />
                                 <Button variant="primary" type="submit">OK</Button>
                             </Form>
                         </div>
-
                     </div>
 
                     <div className={styles.productGrid}>
@@ -56,4 +60,13 @@ export default class ProductPage extends Component {
             </>
         )
     }
+}
+
+// This gets called on every request
+export async function getServerSideProps() {
+    let pageProps: ProductPageProps = {
+        categories: await (await db_req("SELECT * FROM categories;")).rows
+    }
+
+    return { props: pageProps };
 }
