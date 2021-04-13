@@ -3,7 +3,7 @@ module.exports.listen = () => {
     var client = mqtt.connect('ws://broker.emqx.io:8083/mqtt')
 
     client.on('connect', function () {
-        client.subscribe('esp/test', { qos: 0 }, function (err) {
+        client.subscribe('webshop/products', { qos: 0 }, function (err) {
             if (err)
                 throw err;
             client.on('message', (topic, message, packet) => {
@@ -19,14 +19,15 @@ module.exports.listen = () => {
 
                 var the_string = message.toString();
                 var result = the_string.toLowerCase();
-                var parts = result.split('-', 2);
+                var parts = result.split('-', 3);
                 var the_text = parts[0];
                 var the_num = parseInt(parts[1]);
+                var the_amount = parseInt(parts[2]);
                 var new_stock_status;
 
                 function selectAll() {
                     const query_select = {
-                        text: 'SELECT * FROM test',
+                        text: 'SELECT * FROM products',
                         rowMode: 'array'
                     };
 
@@ -36,7 +37,7 @@ module.exports.listen = () => {
 
                         console.log('ALL DATA:');
                         data.forEach(row => {
-                            console.log(`productno: ${row[0]} stock: ${row[1]}`);
+                            console.log(`id: ${row[0]} stock: ${row[4]}`);
                         })
                     });
                 }
@@ -44,7 +45,7 @@ module.exports.listen = () => {
                 function find_stock_status(productno) {
                     if (the_text == "check") {
                         const query_select = {
-                            text: `SELECT * FROM test WHERE productno=${productno}`,
+                            text: `SELECT * FROM products WHERE id=${productno}`,
                             rowMode: 'array'
                         };
 
@@ -54,54 +55,56 @@ module.exports.listen = () => {
 
                             console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
                             data.forEach(row => {
-                                console.log(`productno: ${row[0]} stock: ${row[1]}`);
+                                console.log(`id: ${row[0]} stock: ${row[4]}`);
                             })
                         });
                     }
                 }
 
-                function new_package(productno, callback){
-                    const query_select = {
-                        text: `SELECT * FROM test WHERE productno=${productno}`,
-                        rowMode: 'array'
-                    };
+                function update_packages(productno, choice, callback) {
+                    if (choice == "in") {
+                        const query_select = {
+                            text: `SELECT * FROM products WHERE id=${productno}`,
+                            rowMode: 'array'
+                        };
 
-                    client.query(query_select).then(res => {
-                        var stock_status;
-                        const data = res.rows;
+                        client.query(query_select).then(res => {
+                            var stock_status;
+                            const data = res.rows;
 
-                        console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
-                        data.forEach(row => {
-                            stock_status = `${row[1]}`;
-                            new_stock_status = parseInt(stock_status);
-                            console.log(new_stock_status);
-                            new_stock_status++;
-                        })
+                            console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
+                            data.forEach(row => {
+                                stock_status = `${row[4]}`;
+                                new_stock_status = parseInt(stock_status);
+                                console.log(new_stock_status);
+                                new_stock_status += the_amount;
+                            })
 
-                        callback();
-                    });
-                }
+                            callback();
+                        });
+                    }
 
-                function remove_package(productno, callback){
-                    const query_select = {
-                        text: `SELECT * FROM test WHERE productno=${productno}`,
-                        rowMode: 'array'
-                    };
+                    if (choice == "out") {
+                        const query_select = {
+                            text: `SELECT * FROM products WHERE id=${productno}`,
+                            rowMode: 'array'
+                        };
 
-                    client.query(query_select).then(res => {
-                        var stock_status;
-                        const data = res.rows;
+                        client.query(query_select).then(res => {
+                            var stock_status;
+                            const data = res.rows;
 
-                        console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
-                        data.forEach(row => {
-                            stock_status = `${row[1]}`;
-                            new_stock_status = parseInt(stock_status);
-                            console.log(new_stock_status);
-                            new_stock_status--;
-                        })
+                            console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
+                            data.forEach(row => {
+                                stock_status = `${row[4]}`;
+                                new_stock_status = parseInt(stock_status);
+                                console.log(new_stock_status);
+                                new_stock_status -= the_amount;
+                            })
 
-                        callback();
-                    });
+                            callback();
+                        });
+                    }
                 }
 
                 client.connect();
@@ -109,44 +112,45 @@ module.exports.listen = () => {
                 const string = message.toString();
 
                 if (the_text == "in") {
-                    new_package(the_num, () => {
+                    update_packages(the_num, "in", () => {
                         console.log(new_stock_status);
                         const query_update = `DO
                     $do$
                     BEGIN
-                       IF EXISTS (SELECT * FROM test WHERE productno=${the_num}) THEN
-                          UPDATE test SET stock=${new_stock_status} WHERE productno=${the_num};
+                       IF EXISTS (SELECT * FROM products WHERE id=${the_num}) THEN
+                          UPDATE products SET stock=${new_stock_status} WHERE id=${the_num};
                        ELSE
-                          INSERT INTO test(productno,stock) VALUES (${the_num},1);
+                          INSERT INTO products(id,stock) VALUES (${the_num},1);
                        END IF;
                     END
                     $do$
                 `;
 
-                    client.query(query_update, (err, res) => {
-                        console.log('Data update successful');
+                        client.query(query_update, (err, res) => {
+                            console.log('Data update successful');
+                        });
                     });
-                    });
+                    selectAll();
                 }
 
                 if (the_text == "out") {
-                    remove_package(the_num, () => {
+                    update_packages(the_num, "out", () => {
                         console.log(new_stock_status);
                         const query_update = `DO
                     $do$
                     BEGIN
-                       IF EXISTS (SELECT * FROM test WHERE productno=${the_num}) THEN
-                          UPDATE test SET stock=${new_stock_status} WHERE productno=${the_num};
+                       IF EXISTS (SELECT * FROM products WHERE id=${the_num}) THEN
+                          UPDATE products SET stock=${new_stock_status} WHERE id=${the_num};
                        ELSE
-                          INSERT INTO test(productno,stock) VALUES (${the_num},0);
+                          INSERT INTO products(id,stock) VALUES (${the_num},0);
                        END IF;
                     END
                     $do$
                 `;
 
-                    client.query(query_update, (err, res) => {
-                        console.log('Data update successful');
-                    });
+                        client.query(query_update, (err, res) => {
+                            console.log('Data update successful');
+                        });
                     });
                 }
 
