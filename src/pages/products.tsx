@@ -12,16 +12,11 @@ interface ICategory {
     name: string;
 }
 
-<<<<<<< HEAD
-
-interface ProductsPageProps {
-=======
 interface FilterOptions {
     category: number;
 }
 
 interface ProductPageProps {
->>>>>>> d653f51620e89b8346513b845de33d86386c1ffc
     categories: ICategory[];
     products: string;
     filter: FilterOptions;
