@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import Slider from "../components/Slider"
 import styles from '../styles/Products.module.scss';
 import { db_req } from '../db_helper'
+import Cell, {ICellProps} from '../components/Cell'
 
 interface ICategory {
     id: number;
@@ -11,7 +12,8 @@ interface ICategory {
 }
 
 interface ProductPageProps {
-    categories: ICategory[]
+    categories: ICategory[];
+    products: string;
 }
 
 export default class ProductPage extends Component<ProductPageProps> {
@@ -54,7 +56,9 @@ export default class ProductPage extends Component<ProductPageProps> {
                     </div>
 
                     <div className={styles.productGrid}>
-                        Right
+                        <div style={{display :"grid", gridTemplate: "auto / auto auto auto", gap: "1rem"}}>
+                            {this.props.products.map((product)=> <Cell {...product}></Cell>)}
+                        </div>
                     </div>
                 </main>
             </>
@@ -65,7 +69,8 @@ export default class ProductPage extends Component<ProductPageProps> {
 // This gets called on every request
 export async function getServerSideProps() {
     let pageProps: ProductPageProps = {
-        categories: await (await db_req("SELECT * FROM categories;")).rows
+        categories: await (await db_req("SELECT * FROM categories;")).rows,
+        products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows))
     }
 
     return { props: pageProps };
