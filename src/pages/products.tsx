@@ -5,15 +5,21 @@ import Slider from "../components/Slider"
 import styles from '../styles/Products.module.scss';
 import { db_req } from '../db_helper'
 import Cell, {ICellProps} from '../components/Cell'
+import { GetServerSideProps } from "next";
 
 interface ICategory {
     id: number;
     name: string;
 }
 
+interface FilterOptions {
+    category: number;
+}
+
 interface ProductPageProps {
     categories: ICategory[];
     products: string;
+    filter: FilterOptions;
 }
 
 export default class ProductPage extends Component<ProductPageProps> {
@@ -22,6 +28,7 @@ export default class ProductPage extends Component<ProductPageProps> {
             <>
                 <div className={styles.searchText}>
                     <span >Search results for </span>
+                    <div>{this.props.filter.category}</div>
                     <i>"Lego brik"</i>
                 </div>
                 <main className={styles.content}>
@@ -67,10 +74,14 @@ export default class ProductPage extends Component<ProductPageProps> {
 }
 
 // This gets called on every request
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    let catId = Number(context.query["catid"]);
     let pageProps: ProductPageProps = {
+        filter: {
+            category: catId
+        },
         categories: await (await db_req("SELECT * FROM categories;")).rows,
-        products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows))
+        products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE category = $1;", [catId])).rows))
     }
 
     return { props: pageProps };
