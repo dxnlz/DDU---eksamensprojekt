@@ -11,12 +11,17 @@ interface ICategory {
     name: string;
 }
 
-interface ProductPageProps {
+
+interface ProductsPageProps {
     categories: ICategory[];
     products: string;
 }
 
-export default class ProductPage extends Component<ProductPageProps> {
+interface ProductsPageStats {
+    category
+}
+
+export default class ProductsPage extends Component<ProductsPageProps> {
     render() {
         return (
             <>
@@ -31,10 +36,10 @@ export default class ProductPage extends Component<ProductPageProps> {
                         </div>
                         <div className={styles.divider} />
                         <div className={styles.form}>
-                            <Form>
+                            <Form action="/products" method="get">
                                 <Form.Group controlId="category">
                                     <Form.Label className={styles.label}>Kategori: </Form.Label>
-                                    <Form.Control as="select" size="sm">
+                                    <Form.Control id="catid" name="catid" as="select" size="sm">
                                         {this.props.categories.map((option: ICategory)=>(
                                         <option key={option.id} value={option.id}>{option.name}</option>))}
                                     </Form.Control>
@@ -52,6 +57,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                 <hr />
                                 <Button variant="primary" type="submit">OK</Button>
                             </Form>
+    
                         </div>
                     </div>
 
@@ -68,7 +74,7 @@ export default class ProductPage extends Component<ProductPageProps> {
 
 // This gets called on every request
 export async function getServerSideProps() {
-    let pageProps: ProductPageProps = {
+    let pageProps: ProductsPageProps = {
         categories: await (await db_req("SELECT * FROM categories;")).rows,
         products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows))
     }
