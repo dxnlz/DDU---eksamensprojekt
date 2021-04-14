@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import Slider from "../components/Slider"
 import styles from '../styles/Products.module.scss';
 import { db_req } from '../db_helper'
-import Cell, {ICellProps} from '../components/Cell'
+import Cell, { ICellProps } from '../components/Cell'
 import { GetServerSideProps } from "next";
 
 interface ICategory {
@@ -16,14 +16,10 @@ interface FilterOptions {
     category: number;
 }
 
-interface ProductPageProps {
+interface ProductsPageProps {
     categories: ICategory[];
-    products: string;
+    products: ICellProps[];
     filter: FilterOptions;
-}
-
-interface ProductsPageStats {
-    category
 }
 
 export default class ProductsPage extends Component<ProductsPageProps> {
@@ -46,8 +42,8 @@ export default class ProductsPage extends Component<ProductsPageProps> {
                                 <Form.Group controlId="category">
                                     <Form.Label className={styles.label}>Kategori: </Form.Label>
                                     <Form.Control id="catid" name="catid" as="select" size="sm">
-                                        {this.props.categories.map((option: ICategory)=>(
-                                        <option key={option.id} value={option.id}>{option.name}</option>))}
+                                        {this.props.categories.map((option: ICategory) => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>))}
                                     </Form.Control>
                                 </Form.Group>
                                 <hr />
@@ -63,13 +59,13 @@ export default class ProductsPage extends Component<ProductsPageProps> {
                                 <hr />
                                 <Button variant="primary" type="submit">OK</Button>
                             </Form>
-    
+
                         </div>
                     </div>
 
                     <div className={styles.productGrid}>
-                        <div style={{display :"grid", gridTemplate: "auto / auto auto auto", gap: "1rem"}}>
-                            {this.props.products.map((product)=> <Cell {...product}></Cell>)}
+                        <div style={{ display: "grid", gridTemplate: "auto / auto auto auto", gap: "1rem" }}>
+                            {this.props.products.map((product) => <Cell {...product}></Cell>)}
                         </div>
                     </div>
                 </main>
@@ -81,12 +77,19 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 // This gets called on every request
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let catId = Number(context.query["catid"]);
-    let pageProps: ProductPageProps = {
+
+    let products;
+    if (!Number.isNaN(catId))
+        products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE category = $1;", [catId])).rows))
+    else
+        products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows))
+
+    let pageProps: ProductsPageProps = {
         filter: {
             category: catId
         },
         categories: await (await db_req("SELECT * FROM categories;")).rows,
-        products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE category = $1;", [catId])).rows))
+        products: products
     }
 
     return { props: pageProps };
