@@ -16,13 +16,13 @@ interface FilterOptions {
     category: number;
 }
 
-interface ProductPageProps {
+interface ProductsPageProps {
     categories: ICategory[];
-    products: string;
+    products: ICellProps[];
     filter: FilterOptions;
 }
 
-export default class ProductPage extends Component<ProductPageProps> {
+export default class ProductsPage extends Component<ProductsPageProps> {
     render() {
         return (
             <>
@@ -38,10 +38,10 @@ export default class ProductPage extends Component<ProductPageProps> {
                         </div>
                         <div className={styles.divider} />
                         <div className={styles.form}>
-                            <Form>
+                            <Form action="/products" method="get">
                                 <Form.Group controlId="category">
                                     <Form.Label className={styles.label}>Kategori: </Form.Label>
-                                    <Form.Control as="select" size="sm">
+                                    <Form.Control id="catid" name="catid" as="select" size="sm">
                                         {this.props.categories.map((option: ICategory) => (
                                             <option key={option.id} value={option.id}>{option.name}</option>))}
                                     </Form.Control>
@@ -59,6 +59,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                 <hr />
                                 <Button variant="primary" type="submit">OK</Button>
                             </Form>
+
                         </div>
                     </div>
 
@@ -77,13 +78,12 @@ export default class ProductPage extends Component<ProductPageProps> {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let catId = Number(context.query["catid"]);
     let products;
-    if (!Number.isNaN(catId)) {
+    if (!Number.isNaN(catId))
         products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE category = $1;", [catId])).rows))
-    }
-    else(
+    else
         products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows))
-    )
-    let pageProps: ProductPageProps = {
+
+    let pageProps: ProductsPageProps = {
         filter: {
             category: catId
         },
