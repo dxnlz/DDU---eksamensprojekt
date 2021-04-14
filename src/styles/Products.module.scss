@@ -44,13 +44,13 @@
 }
 
 .productGrid {
-  display: flex;
   flex: 3;
   background-color: red;
-  align-items: center;
-  justify-content: center;
   border-radius: 4px;
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+  padding: 1rem;
 }
 
 .label {

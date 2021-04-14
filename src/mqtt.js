@@ -22,7 +22,7 @@ module.exports.listen = () => {
                 var parts = result.split('-', 3);
                 var the_text = parts[0];
                 var the_num = parseInt(parts[1]);
-                var new_amount = parseInt(parts[2]);
+                var the_amount = parseInt(parts[2]);
                 var new_stock_status;
 
                 function selectAll() {
@@ -67,9 +67,9 @@ module.exports.listen = () => {
                         rowMode: 'array'
                     };
 
-                    client.query(query_select).then(res => {
-                        var stock_status;
-                        const data = res.rows;
+                        client.query(query_select).then(res => {
+                            var stock_status;
+                            const data = res.rows;
 
                         console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
                         data.forEach(row => {
@@ -79,9 +79,9 @@ module.exports.listen = () => {
                             new_stock_status += new_amount;
                         })
 
-                        callback();
-                    });
-                }
+                            callback();
+                        });
+                    }
 
                 function remove_package(productno, callback) {
                     const query_select = {
@@ -89,9 +89,9 @@ module.exports.listen = () => {
                         rowMode: 'array'
                     };
 
-                    client.query(query_select).then(res => {
-                        var stock_status;
-                        const data = res.rows;
+                        client.query(query_select).then(res => {
+                            var stock_status;
+                            const data = res.rows;
 
                         console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
                         data.forEach(row => {
@@ -101,8 +101,9 @@ module.exports.listen = () => {
                             new_stock_status -= new_amount;
                         })
 
-                        callback();
-                    });
+                            callback();
+                        });
+                    }
                 }
 
                 client.connect();
@@ -110,7 +111,7 @@ module.exports.listen = () => {
                 const string = message.toString();
 
                 if (the_text == "in") {
-                    new_package(the_num, () => {
+                    update_packages(the_num, "in", () => {
                         console.log(new_stock_status);
                         const query_update = `DO
                     $do$
@@ -128,10 +129,11 @@ module.exports.listen = () => {
                             console.log('Data update successful');
                         });
                     });
+                    selectAll();
                 }
 
                 if (the_text == "out") {
-                    remove_package(the_num, () => {
+                    update_packages(the_num, "out", () => {
                         console.log(new_stock_status);
                         const query_update = `DO
                     $do$
