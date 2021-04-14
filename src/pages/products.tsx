@@ -77,7 +77,6 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 // This gets called on every request
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let catId = Number(context.query["catid"]);
-
     let products;
     if (!Number.isNaN(catId))
         products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE category = $1;", [catId])).rows))
