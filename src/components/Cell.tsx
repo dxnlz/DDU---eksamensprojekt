@@ -29,6 +29,7 @@ export default class Cell extends Component<ICellProps> {
                         </IconButton>
                     }
                     title={this.props.name}
+                    titleTypographyProps={{variant:'h6', component: "b"}}
                     subheader="September 14, 2016"
                 />
                 <CardMedia
@@ -48,9 +49,16 @@ export default class Cell extends Component<ICellProps> {
                 </Typography>
                 </CardContent>
                 <CardActions style={{ justifyContent: "space-between", marginTop: "-20px" }}>
+                    <div>
                     <Button style={{ marginLeft: "8px" }} variant="contained" color="primary">
-                        Buy
+                        View
                 </Button>
+                    {/* <Button style={{ marginLeft: "8px" }} variant="contained" color="primary">
+                        Add to Cart
+                </Button> */}
+                    </div>
+
+
                     <div>
                         <IconButton aria-label="add to favorites">
                             <Favorite />

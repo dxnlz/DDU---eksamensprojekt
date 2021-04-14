@@ -89,21 +89,20 @@ module.exports.listen = () => {
                         rowMode: 'array'
                     };
 
-                        client.query(query_select).then(res => {
-                            var stock_status;
-                            const data = res.rows;
+                    client.query(query_select).then(res => {
+                        var stock_status;
+                        const data = res.rows;
 
-                        console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
-                        data.forEach(row => {
-                            stock_status = `${row[4]}`;
-                            new_stock_status = parseInt(stock_status);
-                            console.log(new_stock_status);
-                            new_stock_status -= new_amount;
-                        })
+                    console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
+                    data.forEach(row => {
+                        stock_status = `${row[4]}`;
+                        new_stock_status = parseInt(stock_status);
+                        console.log(new_stock_status);
+                        new_stock_status -= new_amount;
+                    })
 
-                            callback();
-                        });
-                    }
+                        callback();
+                    }); 
                 }
 
                 client.connect();

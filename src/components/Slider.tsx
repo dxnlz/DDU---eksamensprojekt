@@ -3,9 +3,10 @@ import ReactSlider from 'react-slider';
 import styles from '../styles/Slider.module.scss'
 
 export interface SliderProps {
+    begin: number | number[];
     min: number;
     max: number;
-    onUpdateSlider?: (val: number | number[]) => {};
+    onUpdateSlider?: (val: number | number[]) => void;
     double?: boolean;
     suffix?: string;
 }
@@ -17,11 +18,7 @@ export interface SliderState {
 class Slider extends React.Component<SliderProps, SliderState> {
     constructor(props: SliderProps) {
         super(props);
-        if(this.props.double)
-        this.state = { value: [this.props.min, this.props.max] };
-        else 
-        this.state = { value: this.props.max };
-
+        this.state = { value: this.props.begin };
     }
 
     onUpdateSlider = (val: number | number[]) => {
@@ -39,7 +36,7 @@ class Slider extends React.Component<SliderProps, SliderState> {
                 className={styles.slider}
                 thumbClassName={styles.sliderThumb}
                 trackClassName={styles.sliderTrack}
-                defaultValue={this.props.double? [this.props.min, this.props.max] : this.props.max}
+                defaultValue={this.props.begin}
                 max={this.props.max}
                 min={this.props.min}
                 onChange={this.onUpdateSlider}

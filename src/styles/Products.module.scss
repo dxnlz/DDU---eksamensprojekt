@@ -43,7 +43,7 @@
   flex-direction: column;
 }
 
-.productGrid {
+.productContainer {
   flex: 3;
   background-color: red;
   border-radius: 4px;
@@ -51,6 +51,18 @@
   height: calc(100vh - 120px);
   overflow-y: scroll;
   padding: 1rem;
+}
+
+.productGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template: 1fr / 1fr;
+  @media (min-width: 768px) {
+    grid-template: 1fr / 1fr 1fr;
+  }
+  @media (min-width: 1408px) {
+    grid-template: 1fr / 1fr 1fr 1fr;
+  }
 }
 
 .label {

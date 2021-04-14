@@ -13,22 +13,83 @@ interface ICategory {
 }
 
 interface FilterOptions {
-    category: number;
+    catId: number;
+    minPrice: number;
+    maxPrice: number;
+    minStock: number;
 }
 
 interface ProductsPageProps {
     categories: ICategory[];
     products: ICellProps[];
     filter: FilterOptions;
+    maxPrice: number;
+    maxStock: number;
+
 }
 
 export default class ProductsPage extends Component<ProductsPageProps> {
+    onChangePriceRange = (priceRange: number[]) => {
+        if ('URLSearchParams' in window) {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set("minprice", String(priceRange[0]));
+            searchParams.set("maxprice", String(priceRange[1]));
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            history.pushState(null, '', newRelativePathQuery);
+        }
+        this.props.filter.minPrice = priceRange[0];
+        this.props.filter.maxPrice = priceRange[1];
+        this.setState({});
+    }
+
+    onChangeStock = (minStock: number) => {
+        if ('URLSearchParams' in window) {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set("minstock", String(minStock));
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            history.pushState(null, '', newRelativePathQuery);
+        }
+        this.props.filter.minStock = minStock;
+        this.setState({});
+    }
+
+    onChangeCategory = (catId: number) => {
+        if ('URLSearchParams' in window) {
+            var searchParams = new URLSearchParams(window.location.search);
+            if (Number.isNaN(catId) || catId == undefined || catId == 0)
+                searchParams.delete("catid");
+            else
+                searchParams.set("catid", String(catId));
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            history.pushState(null, '', newRelativePathQuery);
+        }
+        this.props.filter.catId = catId;
+        this.setState({});
+    }
+
+    getFilteredProducts(): ICellProps[] {
+        let products = this.props.products;
+
+        if (!Number.isNaN(this.props.filter.catId) && this.props.filter.catId != undefined)
+            products = products.filter((val) => val.category == this.props.filter.catId)
+
+        if (!Number.isNaN(this.props.filter.minPrice) && this.props.filter.minPrice != undefined)
+            products = products.filter((val) => val.price >= this.props.filter.minPrice)
+
+        if (!Number.isNaN(this.props.filter.maxPrice) && this.props.filter.maxPrice != undefined)
+            products = products.filter((val) => val.price <= this.props.filter.maxPrice)
+
+        if (!Number.isNaN(this.props.filter.minStock) && this.props.filter.minStock != undefined)
+            products = products.filter((val) => val.stock >= this.props.filter.minStock)
+
+        return products;
+    }
+
     render() {
         return (
             <>
                 <div className={styles.searchText}>
                     <span >Search results for </span>
-                    <div>{this.props.filter.category}</div>
                     <i>"Lego brik"</i>
                 </div>
                 <main className={styles.content}>
@@ -38,10 +99,12 @@ export default class ProductsPage extends Component<ProductsPageProps> {
                         </div>
                         <div className={styles.divider} />
                         <div className={styles.form}>
-                            <Form action="/products" method="get">
-                                <Form.Group controlId="category">
-                                    <Form.Label className={styles.label}>Kategori: </Form.Label>
-                                    <Form.Control id="catid" name="catid" as="select" size="sm">
+                            <Form>
+                                <Form.Group>
+                                    <Form.Label className={styles.label} htmlFor="Category ID">Kategori: </Form.Label>
+                                    <Form.Control id="catid" name="catid" as="select" size="sm" value={this.props.filter.catId}
+                                        onChange={event => this.onChangeCategory(Number(event.target.value))}>
+                                        <option key={0} value={Number.NaN}>All</option>
                                         {this.props.categories.map((option: ICategory) => (
                                             <option key={option.id} value={option.id}>{option.name}</option>))}
                                     </Form.Control>
@@ -49,23 +112,23 @@ export default class ProductsPage extends Component<ProductsPageProps> {
                                 <hr />
                                 <Form.Group controlId="priceRange">
                                     <Form.Label className={styles.label}>Pris:</Form.Label>
-                                    <Slider min={0} max={69} suffix="kr." double />
+                                    <Slider begin={[this.props.filter.minPrice, this.props.filter.maxPrice]} min={0} max={this.props.maxPrice} suffix="kr." double onUpdateSlider={this.onChangePriceRange} />
                                 </Form.Group>
                                 <hr />
                                 <Form.Group controlId="stock">
                                     <Form.Label className={styles.label}>Lager:</Form.Label>
-                                    <Slider min={0} max={69} suffix="stk." />
+                                    <Slider begin={this.props.filter.minStock} min={0} max={this.props.maxStock} suffix="stk." onUpdateSlider={this.onChangeStock} />
                                 </Form.Group>
                                 <hr />
-                                <Button variant="primary" type="submit">OK</Button>
+                                <Button variant="primary" onClick={() => { location.reload(); }}>OK</Button>
                             </Form>
 
                         </div>
                     </div>
 
-                    <div className={styles.productGrid}>
-                        <div style={{ display: "grid", gridTemplate: "auto / auto auto auto", gap: "1rem" }}>
-                            {this.props.products.map((product) => <Cell {...product}></Cell>)}
+                    <div className={styles.productContainer}>
+                        <div className={styles.productGrid}>
+                            {this.getFilteredProducts().map((product) => <Cell {...product}></Cell>)}
                         </div>
                     </div>
                 </main>
@@ -76,20 +139,26 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 
 // This gets called on every request
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let catId = Number(context.query["catid"]);
-    let products;
-    if (!Number.isNaN(catId))
-        products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE category = $1;", [catId])).rows))
-    else
-        products = JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows))
-
     let pageProps: ProductsPageProps = {
         filter: {
-            category: catId
+            catId: Number(context.query["catid"]),
+            minPrice: Number(context.query["minprice"]),
+            maxPrice: Number(context.query["maxprice"]),
+            minStock: Number(context.query["minstock"])
         },
         categories: await (await db_req("SELECT * FROM categories;")).rows,
-        products: products
+        products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows)),
+        maxPrice: await (await db_req("SELECT price FROM products WHERE price >= ALL(SELECT price FROM products);")).rows[0].price,
+        maxStock: await (await db_req("SELECT stock FROM products WHERE stock >= ALL(SELECT stock FROM products);")).rows[0].stock
     }
+
+
+    if (!Number.isSafeInteger(pageProps.filter.maxPrice))
+        pageProps.filter.maxPrice = pageProps.maxPrice;
+    if (!Number.isSafeInteger(pageProps.filter.minPrice))
+        pageProps.filter.minPrice = 0;
+    if (!Number.isSafeInteger(pageProps.filter.minStock))
+        pageProps.filter.minStock = 0;
 
     return { props: pageProps };
 }
