@@ -37,7 +37,7 @@ module.exports.listen = () => {
 
                         console.log('ALL DATA:');
                         data.forEach(row => {
-                            console.log(`id: ${row[0]} name:${row[1]} price: ${row[3]} stock: ${row[4]}`);
+                            console.log(`id: ${row[0]} stock: ${row[4]}`);
                         })
                     });
                 }
@@ -55,54 +55,56 @@ module.exports.listen = () => {
 
                             console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
                             data.forEach(row => {
-                                console.log(`id: ${row[0]} name: ${row[1]} price: ${row[3]} stock: ${row[4]}`);
+                                console.log(`id: ${row[0]} stock: ${row[4]}`);
                             })
                         });
                     }
                 }
 
-                function new_package(productno, callback) {
-                    const query_select = {
-                        text: `SELECT * FROM products WHERE id=${productno}`,
-                        rowMode: 'array'
-                    };
+                function update_packages(productno, choice, callback) {
+                    if (choice == "in") {
+                        const query_select = {
+                            text: `SELECT * FROM products WHERE id=${productno}`,
+                            rowMode: 'array'
+                        };
 
                         client.query(query_select).then(res => {
                             var stock_status;
                             const data = res.rows;
 
-                        console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
-                        data.forEach(row => {
-                            stock_status = `${row[4]}`;
-                            new_stock_status = parseInt(stock_status);
-                            console.log(new_stock_status);
-                            new_stock_status += new_amount;
-                        })
+                            console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
+                            data.forEach(row => {
+                                stock_status = `${row[4]}`;
+                                new_stock_status = parseInt(stock_status);
+                                console.log(new_stock_status);
+                                new_stock_status += the_amount;
+                            })
 
                             callback();
                         });
                     }
 
-                function remove_package(productno, callback) {
-                    const query_select = {
-                        text: `SELECT * FROM products WHERE id=${productno}`,
-                        rowMode: 'array'
-                    };
+                    if (choice == "out") {
+                        const query_select = {
+                            text: `SELECT * FROM products WHERE id=${productno}`,
+                            rowMode: 'array'
+                        };
 
-                    client.query(query_select).then(res => {
-                        var stock_status;
-                        const data = res.rows;
+                        client.query(query_select).then(res => {
+                            var stock_status;
+                            const data = res.rows;
 
-                    console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
-                    data.forEach(row => {
-                        stock_status = `${row[4]}`;
-                        new_stock_status = parseInt(stock_status);
-                        console.log(new_stock_status);
-                        new_stock_status -= new_amount;
-                    })
+                            console.log(`SPECIFIC DATA FOR PRODUCT: ${productno}`);
+                            data.forEach(row => {
+                                stock_status = `${row[4]}`;
+                                new_stock_status = parseInt(stock_status);
+                                console.log(new_stock_status);
+                                new_stock_status -= the_amount;
+                            })
 
-                        callback();
-                    }); 
+                            callback();
+                        });
+                    }
                 }
 
                 client.connect();
@@ -140,7 +142,7 @@ module.exports.listen = () => {
                        IF EXISTS (SELECT * FROM products WHERE id=${the_num}) THEN
                           UPDATE products SET stock=${new_stock_status} WHERE id=${the_num};
                        ELSE
-                          INSERT INTO products(productno,stock) VALUES (${the_num},0);
+                          INSERT INTO products(id,stock) VALUES (${the_num},0);
                        END IF;
                     END
                     $do$

@@ -1,16 +1,14 @@
-import { Button, FormControl, FormHelperText, Input, InputLabel, Slider, TextField, Typography } from "@material-ui/core";
-import React, { Component } from "react";
+import { Button, FormControl, FormHelperText, Input, InputLabel, Slider, TextField, Typography, makeStyles, createStyles, Theme  } from "@material-ui/core";
+import React, { Component, useEffect, useReducer } from "react";
 import CellGrid from "../components/CellGrid"
 import styles from '../styles/Products.module.scss';
 
 
 
-import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
 
 //template taken from the internet -> https://surajsharma.net/blog/react-login-form-typescript
 
