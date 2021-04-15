@@ -1,14 +1,17 @@
-import { Button, FormControl, FormHelperText, Input, InputLabel, Slider, TextField, Typography, makeStyles, createStyles, Theme  } from "@material-ui/core";
-import React, { Component, useEffect, useReducer } from "react";
+import { Button, FormControl, FormHelperText, Input, InputLabel, Slider, TextField, Typography, makeStyles, createStyles} from "@material-ui/core";
+import React, { Component, useReducer, useEffect} from "react";
 import CellGrid from "../components/CellGrid"
 import styles from '../styles/Products.module.scss';
-
-
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
+
+interface loginCredentialsProps{
+  username: string;
+  password: string;
+}
 
 //template taken from the internet -> https://surajsharma.net/blog/react-login-form-typescript
 
@@ -116,7 +119,7 @@ const AdminPage = () => {
   }, [state.username, state.password]);
 
   const handleLogin = () => {
-    if (state.username === 'abc@email.com' && state.password === 'password') {
+    if (state.username === credentialsProps.username && state.password === 'password') {
       dispatch({
         type: 'loginSuccess',
         payload: 'Login Successfully'
@@ -151,7 +154,7 @@ const AdminPage = () => {
       });
     }
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form className={classes.container} noValidate autoComplete="on">
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Login App" />
         <CardContent>

@@ -1,21 +1,25 @@
 module.exports.listen = () => {
+    const { Client } = require('pg');
+    const db_client = new Client({
+        user: 'postgres',
+        host: 'localhost',
+        database: 'webshop',
+        password: 'postgres',
+        port: 5432,
+    });
     var mqtt = require('mqtt')
     var client = mqtt.connect('ws://broker.emqx.io:8083/mqtt')
 
+    db_client.connect();
+
     client.on('connect', function () {
-        client.subscribe('webshop/products', { qos: 0 }, function (err) {
+        client.subscribe('webshop/products', {
+            qos: 0
+        }, function (err) {
             if (err)
                 throw err;
             client.on('message', (topic, message, packet) => {
                 console.log('Received Message: ' + message.toString() + '\nOn topic: ' + topic)
-                const { Client } = require('pg');
-                const client = new Client({
-                    user: 'postgres',
-                    host: 'localhost',
-                    database: 'webshop',
-                    password: 'postgres',
-                    port: 5432,
-                });
 
                 var the_string = message.toString();
                 var result = the_string.toLowerCase();
@@ -31,7 +35,7 @@ module.exports.listen = () => {
                         rowMode: 'array'
                     };
 
-                    client.query(query_select).then(res => {
+                    db_client.query(query_select).then(res => {
 
                         const data = res.rows;
 
@@ -49,7 +53,7 @@ module.exports.listen = () => {
                             rowMode: 'array'
                         };
 
-                        client.query(query_select).then(res => {
+                        db_client.query(query_select).then(res => {
 
                             const data = res.rows;
 
@@ -68,7 +72,7 @@ module.exports.listen = () => {
                             rowMode: 'array'
                         };
 
-                        client.query(query_select).then(res => {
+                        db_client.query(query_select).then(res => {
                             var stock_status;
                             const data = res.rows;
 
@@ -90,7 +94,7 @@ module.exports.listen = () => {
                             rowMode: 'array'
                         };
 
-                        client.query(query_select).then(res => {
+                        db_client.query(query_select).then(res => {
                             var stock_status;
                             const data = res.rows;
 
@@ -106,8 +110,6 @@ module.exports.listen = () => {
                         });
                     }
                 }
-
-                client.connect();
 
                 const string = message.toString();
 
@@ -126,7 +128,7 @@ module.exports.listen = () => {
                     $do$
                 `;
 
-                        client.query(query_update, (err, res) => {
+                        db_client.query(query_update, (err, res) => {
                             console.log('Data update successful');
                         });
                     });
@@ -148,7 +150,7 @@ module.exports.listen = () => {
                     $do$
                 `;
 
-                        client.query(query_update, (err, res) => {
+                        db_client.query(query_update, (err, res) => {
                             console.log('Data update successful');
                         });
                     });
