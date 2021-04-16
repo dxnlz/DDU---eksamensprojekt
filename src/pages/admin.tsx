@@ -1,6 +1,5 @@
-import { Button, FormControl, FormHelperText, Input, InputLabel, Slider, TextField, Typography, makeStyles, createStyles} from "@material-ui/core";
+import { Button, FormControl, FormHelperText, Input, InputLabel, Slider, TextField, Typography, makeStyles, createStyles, Theme} from "@material-ui/core";
 import React, { Component, useReducer, useEffect} from "react";
-import CellGrid from "../components/CellGrid"
 import styles from '../styles/Products.module.scss';
 
 import Card from '@material-ui/core/Card';
@@ -119,7 +118,7 @@ const AdminPage = () => {
   }, [state.username, state.password]);
 
   const handleLogin = () => {
-    if (state.username === credentialsProps.username && state.password === 'password') {
+    if (/*state.username === credentialsProps.username &&*/ state.password === 'password') {
       dispatch({
         type: 'loginSuccess',
         payload: 'Login Successfully'

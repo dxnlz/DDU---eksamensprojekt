@@ -1,5 +1,6 @@
 import '../styles/globals.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import styles from '../styles/Main.module.scss';
 
 import React, { Component } from "react";
@@ -9,6 +10,7 @@ import NextApp from 'next/app'
 
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { ThemeProvider as MaterialThemeProvider, createMuiTheme, StylesProvider } from '@material-ui/core/styles';
+import CookieConsent from 'react-cookie-consent';
 
 const theme = {
   primary: '#ffaabb',
@@ -31,6 +33,7 @@ class App extends NextApp {
               <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header path={this.props.router.asPath} />
+            <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
             <div className={styles.root}>
               <this.props.Component {...this.props.pageProps} />
             </div>

@@ -11,7 +11,6 @@ import { ArrowBack } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating';
 import Link from "next/link";
-import Router from 'next/router'
 
 interface ICategory {
     id: number;
@@ -32,7 +31,7 @@ export default class ProductPage extends Component<ProductPageProps> {
             <>
                 <main className={styles.content}>
                     <div className={styles.left}>
-                            <Button onClick={()=>Router.back()} className={styles.back}>
+                            <Button onClick={()=>window.history.back()} className={styles.back}>
                                 <ArrowBack/> Go back!
                             </Button>
 
@@ -56,7 +55,8 @@ export default class ProductPage extends Component<ProductPageProps> {
                             <Rating name="size-large" defaultValue={2.4} size="large" style={{color: "red"}}/>
                             <br/>
                             <b>Info:</b>
-                            <Typography variant="body1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Typography>
+                            <Typography variant="body1">
+                                <blockquote>{this.props.product.description}</blockquote></Typography>
                             <Typography variant="body1"><b>Price:</b> {this.props.product.price} dkk</Typography>
                             <Typography variant="body1"><b>Stock:</b> {this.props.product.stock}</Typography>
 

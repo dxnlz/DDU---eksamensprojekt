@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, Typography, Button, InputBase, Divider } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { AppBar, Toolbar, Typography, Button, InputBase, Divider, IconButton } from '@material-ui/core';
+import { AccountCircle, Search } from '@material-ui/icons';
 import styles from '../styles/Header.module.scss'
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link'
@@ -96,7 +96,9 @@ class Header extends Component<HeaderProps> {
             <MenuItem text="Search" url="/search" path={this.props.path}/>
             <MenuItem text="Admin" url="/admin" path={this.props.path} />
           </div>
-          <div className={inputstyles.search}>
+
+<div style={{ display: "flex", alignItems: "center" }}>
+<div className={inputstyles.search}>
             <div className={inputstyles.searchIcon}>
               <Search />
             </div>
@@ -115,6 +117,17 @@ class Header extends Component<HeaderProps> {
               }}
             />
           </div>
+                  <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+          style={{marginLeft: "1rem"}}
+        >
+          <AccountCircle />
+        </IconButton>
+</div>
+          
         </Toolbar>
       </AppBar>
     )
