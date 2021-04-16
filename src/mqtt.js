@@ -132,7 +132,6 @@ module.exports.listen = () => {
                             console.log('Data update successful');
                         });
                     });
-                    selectAll();
                 }
 
                 if (the_text == "out") {
