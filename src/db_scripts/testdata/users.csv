@@ -1,3 +1,3 @@
-id, username, birthday, country, registered, password
-1, "12destroyer21", "2002-07-05", 62, "2021-04-06", "unsecure"
-123, "dannythehacker", "2002-01-01", 183, "2021-04-20", "unsecure"
+id, username, birthday, country, registered, password, isadmin
+1, "12destroyer21", "2002-07-05", 62, "2021-04-06", "$2a$10$T7S.2oNyXEOP4d5GpIMatebARCiwG00ZhXGneg8vTHEkfdBL625Fy", "true"
+123, "dannythehacker", "2002-01-01", 183, "2021-04-20", "unsecure", "false"

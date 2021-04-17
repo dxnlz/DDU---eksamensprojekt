@@ -1,11 +1,8 @@
-import React, { Component, CSSProperties } from "react";
+import { GetServerSideProps } from "next";
+import React, { Component } from "react";
 import styles from '../styles/Main.module.scss';
 
-interface IndexProps {
-  text: string;
-}
-
-class Index extends Component<IndexProps> {
+class Index extends Component {
   render() {
     return (
       <>
@@ -13,7 +10,7 @@ class Index extends Component<IndexProps> {
         <h1 className={styles.title}>
           Webshop teknikfag
         </h1>
-          <code>{this.props.text}
+          <code>Is this code???
           </code>
         </main>
       </>
@@ -21,14 +18,8 @@ class Index extends Component<IndexProps> {
   }
 }
 
-// This gets called on every request
-export async function getServerSideProps() {
-  console.log("Hello");
-  let pageProps: IndexProps = {
-    text: "Is this code??"
-  }
-
-  return { props: pageProps };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return { props: {} };
 }
 
 

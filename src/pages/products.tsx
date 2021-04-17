@@ -1,11 +1,12 @@
-import { Typography } from "@material-ui/core";
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
-import Slider from "../components/Slider"
-import styles from '../styles/Products.module.scss';
-import { db_req } from '../db_helper'
-import Cell, { ICellProps } from '../components/Cell'
 import { GetServerSideProps } from "next";
+import { Typography } from "@material-ui/core";
+
+import styles from '../styles/Products.module.scss';
+import { db_req } from '../lib/db_helper'
+import Cell, { ICellProps } from '../components/Cell'
+import Slider from "../components/Slider"
 
 interface ICategory {
     id: number;

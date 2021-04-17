@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, Typography, Button, InputBase, Divider, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, InputBase, Divider, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { AccountCircle, Search } from '@material-ui/icons';
 import styles from '../styles/Header.module.scss'
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+
 import Link from 'next/link'
+import Router from 'next/router';
+import { IProfileStatus } from '../lib/auth_helper';
 
 const createInputStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,12 +58,12 @@ interface ItemProps {
   url: string;
   path?: string;
 }
-class MenuItem extends React.Component<ItemProps> {
+class BarItem extends React.Component<ItemProps> {
   render() {
     const buttonDisabled = this.props.path == this.props.url;
     return (
       <Link href={this.props.url} passHref>
-        <Button className={styles.menuitem} color={buttonDisabled? "inherit": "primary"} disableElevation variant="outlined" >{this.props.text}</Button>
+        <Button className={styles.menuitem} color={buttonDisabled ? "inherit" : "primary"} disableElevation variant="outlined" >{this.props.text}</Button>
       </Link>
     );
   }
@@ -81,9 +85,45 @@ class TitleItem extends React.Component<ItemProps> {
 interface HeaderProps {
   path: string;
   inputstyles?: any;
+  profile: IProfileStatus;
 }
 
 class Header extends Component<HeaderProps> {
+  onLogout = (popupState: any) => {
+    popupState.close();
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    Router.push("/")
+  }
+
+  onLogin = (popupState: any) => {
+    popupState.close();
+    Router.push("/login")
+  }
+
+  onSignup = (popupState: any) => {
+    popupState.close();
+    Router.push("/signup")
+  }
+
+  loggedInMenu = (popupState: any) => 
+    [
+      <div key="name" style={{ flex: 1, alignItems: "center", display: "flex", gap: 4, marginBottom: 8, marginLeft: 8, marginRight: 8 }}>
+        <AccountCircle /> {this.props.profile.username}
+          </div>,
+      <Divider key="divider"></Divider>,
+      <Link href="/account" passHref>
+        <MenuItem key="account" onClick={popupState.close}>Account</MenuItem>
+      </Link>,
+      <MenuItem key="logout" onClick={() => this.onLogout(popupState)}>Log out</MenuItem>
+    ]
+  
+
+  loggedOutMenu = (popupState: any) => [
+      <MenuItem key="login" onClick={() => this.onLogin(popupState)}>Log in</MenuItem>,
+      <MenuItem key="signup" onClick={() => this.onLogout(popupState)}>Sign up</MenuItem>
+    ]
+  
+
   render() {
     const inputstyles = this.props.inputstyles;
     return (
@@ -91,47 +131,55 @@ class Header extends Component<HeaderProps> {
         <Toolbar style={{ justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <TitleItem text="Web Shop" url="/index" />
-            <Divider orientation="vertical" flexItem style={{backgroundColor: "#ffffff00", marginLeft: "0.5rem",marginRight: "0.5rem"}}></Divider>
-            <MenuItem text="Products" url="/products" path={this.props.path} />
-            <MenuItem text="Search" url="/search" path={this.props.path}/>
-            <MenuItem text="Admin" url="/admin" path={this.props.path} />
+            <Divider orientation="vertical" flexItem style={{ backgroundColor: "#ffffff00", marginLeft: "0.5rem", marginRight: "0.5rem" }}></Divider>
+            <BarItem text="Products" url="/products" path={this.props.path} />
+            {this.props.profile.isAdmin? <BarItem text="Admin" url="/admin" path={this.props.path} /> : <></>}
           </div>
 
-<div style={{ display: "flex", alignItems: "center" }}>
-<div className={inputstyles.search}>
-            <div className={inputstyles.searchIcon}>
-              <Search />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div className={inputstyles.search}>
+              <div className={inputstyles.searchIcon}>
+                <Search />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: inputstyles.inputRoot,
+                  input: inputstyles.inputInput
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                onKeyPress={(ev) => {
+                  console.log(`Pressed keyCode ${ev.key}`);
+                  if (ev.key === 'Enter') {
+                    window.location.href = '/search'
+                  }
+                }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: inputstyles.inputRoot,
-                input: inputstyles.inputInput
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onKeyPress={(ev) => {
-                console.log(`Pressed keyCode ${ev.key}`);
-                if (ev.key === 'Enter') {
-                  window.location.href = '/search'
-                }
-              }}
-            />
-          </div>
+            <PopupState variant="popover" popupId="popup-menu">
+              {(popupState) => <>
                   <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          style={{marginLeft: "1rem"}}
-        >
-          <AccountCircle />
-        </IconButton>
-</div>
-          
+                    aria-label="account of current user"
+                    aria-controls="primary-search-account-menu"
+                    aria-haspopup="true"
+                    color="inherit"
+                    style={{ marginLeft: "1rem" }}
+                    {...bindTrigger(popupState)}
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu {...bindMenu(popupState)}>
+                    {this.props.profile.isLoggedIn ? this.loggedInMenu(popupState) : this.loggedOutMenu(popupState)}
+                  </Menu>
+                  </>
+              }
+            </PopupState>
+          </div>
         </Toolbar>
       </AppBar>
     )
   }
 }
 
-export default (props: HeaderProps) => <Header inputstyles={createInputStyles()} {...props} />;
+const HeaderHydrated = (props: HeaderProps) => <Header inputstyles={createInputStyles()} {...props} />;
+export default HeaderHydrated;

@@ -1,24 +1,10 @@
--- ID generator for users - https://stackoverflow.com/a/41988979
-CREATE OR REPLACE FUNCTION pseudo_encrypt(VALUE bigint) returns bigint AS $$
-DECLARE
-l1 bigint;
-l2 bigint;
-r1 bigint;
-r2 bigint;
-i int:=0;
+CREATE OR REPLACE FUNCTION random_between(low BIGINT ,high BIGINT) 
+   RETURNS BIGINT AS
+$$
 BEGIN
-    l1:= (VALUE >> 32) & 4294967295::bigint;
-    r1:= VALUE & 4294967295;
-    WHILE i < 3 LOOP
-        l2 := r1;
-        r2 := l1 # ((((1366.0 * r1 + 150889) % 714025) / 714025.0) * 32767*32767)::int;
-        l1 := l2;
-        r1 := r2;
-        i := i + 1;
-    END LOOP;
-RETURN ((l1::bigint << 32) + r1);
+   RETURN floor(random()* (high-low + 1) + low);
 END;
-$$ LANGUAGE plpgsql strict immutable;
+$$ language 'plpgsql' STRICT;
 
 -- Create tables
 CREATE TABLE IF NOT EXISTS "products"(
@@ -42,17 +28,18 @@ CREATE TABLE IF NOT EXISTS "categories"(
 
 
 CREATE TABLE IF NOT EXISTS "users"(
-    "id" BIGINT DEFAULT pseudo_encrypt(123456),
+    "id" BIGINT DEFAULT random_between(1, 999999999999999999),
     "username" TEXT NOT NULL UNIQUE,
     "birthday" DATE,
     "country" INTEGER,
-    "registered" DATE NOT NULL,
+    "registered" TIMESTAMPTZ NOT NULL,
     "password" TEXT NOT NULL,
     "profile_picture" bytea,
+    "isadmin" boolean,
     PRIMARY KEY (id)
 );
 COMMENT ON COLUMN
-    "users"."password" IS 'argon2id password hash';
+    "users"."password" IS 'bcrypt password hash';
 
 CREATE TABLE IF NOT EXISTS "reviews"(
     "id" INT GENERATED ALWAYS AS IDENTITY,
