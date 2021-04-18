@@ -12,7 +12,7 @@ import { ThemeProvider as MaterialThemeProvider, createMuiTheme, StylesProvider 
 
 import CookieConsent from 'react-cookie-consent';
 import Header from '../components/Header'
-import { GetProfileStatus, IProfileStatus } from '../lib/auth_helper';
+import { getCookie, GetProfileStatus, IProfileStatus } from '../lib/auth_helper';
 
 const theme = {
   primary: '#ffaabb',
@@ -47,10 +47,7 @@ class App extends NextApp {
   }
 }
 
-function getCookie(cookiename, cookies) {
-  var cookiestring = RegExp(cookiename + "=[^;]+").exec(cookies);
-  return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
-}
+
 
 App.getInitialProps = async (appContext) => {
   const appProps = await NextApp.getInitialProps(appContext);

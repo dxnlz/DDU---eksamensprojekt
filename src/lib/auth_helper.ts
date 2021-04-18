@@ -46,6 +46,11 @@ export function GetProfileStatus(token: string): IProfileStatus {
   }
 }
 
+export function getCookie(cookiename, cookies) {
+  var cookiestring = RegExp(cookiename + "=[^;]+").exec(cookies);
+  return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
+}
+
 export function setLogout(e) {
   e.preventDefault();
   Cookies.remove('token');
