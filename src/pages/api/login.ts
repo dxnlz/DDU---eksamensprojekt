@@ -13,8 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!username || !password)
         return res.status(400).json({ status: 'error', error: 'Request missing username or password' });
 
-    /* Check user email in database */
-    const user_req = (await db_req("SELECT * FROM users WHERE username = $1", [username]));
+    const user_req = (await db_req("SELECT id, username, birthday, country, registered, isadmin, password FROM users WHERE username = $1", [username]));
 
     if (user_req.rowCount == 0)
         return res.status(400).json({ status: 'error', error: 'User Not Found' });

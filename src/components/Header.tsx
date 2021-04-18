@@ -97,32 +97,34 @@ class Header extends Component<HeaderProps> {
 
   onLogin = (popupState: any) => {
     popupState.close();
-    Router.push("/login")
   }
 
   onSignup = (popupState: any) => {
     popupState.close();
-    Router.push("/signup")
   }
 
-  loggedInMenu = (popupState: any) => 
+  loggedInMenu = (popupState: any) =>
     [
       <div key="name" style={{ flex: 1, alignItems: "center", display: "flex", gap: 4, marginBottom: 8, marginLeft: 8, marginRight: 8 }}>
         <AccountCircle /> {this.props.profile.username}
-          </div>,
+      </div>,
       <Divider key="divider"></Divider>,
       <Link href="/account" passHref>
         <MenuItem key="account" onClick={popupState.close}>Account</MenuItem>
       </Link>,
       <MenuItem key="logout" onClick={() => this.onLogout(popupState)}>Log out</MenuItem>
     ]
-  
+
 
   loggedOutMenu = (popupState: any) => [
-      <MenuItem key="login" onClick={() => this.onLogin(popupState)}>Log in</MenuItem>,
+    <Link href="/login" passHref>
+      <MenuItem key="login" onClick={() => this.onLogin(popupState)}>Log in</MenuItem>
+    </Link>,
+    <Link href="/signup" passHref>
       <MenuItem key="signup" onClick={() => this.onLogout(popupState)}>Sign up</MenuItem>
-    ]
-  
+    </Link>
+  ]
+
 
   render() {
     const inputstyles = this.props.inputstyles;
@@ -133,7 +135,7 @@ class Header extends Component<HeaderProps> {
             <TitleItem text="Web Shop" url="/index" />
             <Divider orientation="vertical" flexItem style={{ backgroundColor: "#ffffff00", marginLeft: "0.5rem", marginRight: "0.5rem" }}></Divider>
             <BarItem text="Products" url="/products" path={this.props.path} />
-            {this.props.profile.isAdmin? <BarItem text="Admin" url="/admin" path={this.props.path} /> : <></>}
+            {this.props.profile.isAdmin ? <BarItem text="Admin" url="/admin" path={this.props.path} /> : <></>}
           </div>
 
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -158,20 +160,20 @@ class Header extends Component<HeaderProps> {
             </div>
             <PopupState variant="popover" popupId="popup-menu">
               {(popupState) => <>
-                  <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                    style={{ marginLeft: "1rem" }}
-                    {...bindTrigger(popupState)}
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Menu {...bindMenu(popupState)}>
-                    {this.props.profile.isLoggedIn ? this.loggedInMenu(popupState) : this.loggedOutMenu(popupState)}
-                  </Menu>
-                  </>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="primary-search-account-menu"
+                  aria-haspopup="true"
+                  color="inherit"
+                  style={{ marginLeft: "1rem" }}
+                  {...bindTrigger(popupState)}
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu {...bindMenu(popupState)}>
+                  {this.props.profile.isLoggedIn ? this.loggedInMenu(popupState) : this.loggedOutMenu(popupState)}
+                </Menu>
+              </>
               }
             </PopupState>
           </div>

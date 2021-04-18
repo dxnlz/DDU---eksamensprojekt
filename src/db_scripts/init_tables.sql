@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "users"(
     "country" INTEGER,
     "registered" TIMESTAMPTZ NOT NULL,
     "password" TEXT NOT NULL,
-    "profile_picture" bytea,
+    "profile_picture" TEXT,
     "isadmin" boolean,
     PRIMARY KEY (id)
 );
