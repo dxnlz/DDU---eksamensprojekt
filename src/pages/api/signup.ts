@@ -74,17 +74,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // Then we insert the optional data
             if (user_data.birthday != undefined)
                 await db_req("UPDATE users SET birthday = $1 WHERE username = $2", [user_data.birthday, user_data.username])
-            if (user_data.country != undefined)
+	    if (user_data.country != undefined)
                 await db_req("UPDATE users SET country = $1 WHERE username = $2", [user_data.country, user_data.username])
-            if (user_data.isadmin != undefined)
+	    if (user_data.isadmin != undefined)
                 await db_req("UPDATE users SET isadmin = $1 WHERE username = $2", [user_data.isadmin, user_data.username])
-            if (user_data.profile_picture != undefined)
+	    if (user_data.profile_picture != undefined)
                 await db_req("UPDATE users SET profile_picture = $1 WHERE username = $2", [user_data.profile_picture, user_data.username])
         } catch (error) {
             return res.status(500).json({ status: 'error', error: 'Could not insert user into database' });
         }
 
-        return res.writeHead(301, { location: "/login" });
+        res.writeHead(301, { location: "/login" });
+	return res.end();
     });
 
     // We parse the form
