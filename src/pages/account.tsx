@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography, Button } from '@material-ui/core';
 import { GetServerSideProps } from "next";
 
-import { GetServerSideProps } from 'next';
 import Router from 'next/router';
 import { IProfileStatus } from '../lib/auth_helper';
 
@@ -11,6 +10,7 @@ export interface AccountPageProps {
 }
 
 export interface AccountPageState {
+    userPicture: string;
 }
 
 export interface userProfile {
@@ -18,9 +18,12 @@ export interface userProfile {
     isLoggedIn?: boolean;
 }
 
-class AccountPage extends Component<AccountPageProps> {
+class AccountPage extends Component<AccountPageProps, AccountPageState> {
     constructor(props: AccountPageProps) {
         super(props);
+        this.state = {
+            userPicture: ""
+        }
     }
 
     componentDidMount() {
@@ -32,7 +35,9 @@ class AccountPage extends Component<AccountPageProps> {
     }
 
     setHarambe = async () => {
-        this.props.profile.userPicture = "https://www.telegraph.co.uk/content/dam/news/2016/11/09/99356270-Harambe-gorilla-us-election-votes_jpg_trans_NvBQzQNjv4BqqVzuuqpFlyLIwiB6NTmJwfSVWeZ_vEN7c6bHu2jJnT8.jpg";
+        this.setState({
+            userPicture: "https://www.telegraph.co.uk/content/dam/news/2016/11/09/99356270-Harambe-gorilla-us-election-votes_jpg_trans_NvBQzQNjv4BqqVzuuqpFlyLIwiB6NTmJwfSVWeZ_vEN7c6bHu2jJnT8.jpg"
+        })
     }
 
     render() {
@@ -42,7 +47,7 @@ class AccountPage extends Component<AccountPageProps> {
             <div>
                 <div>
                     <h1>Account Page</h1>
-                    <img src={this.props.profile.userPicture} />
+                    <img src={this.state.userPicture} />
                 </div>
 
                 <div>
