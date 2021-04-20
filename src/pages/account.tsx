@@ -35,4 +35,8 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
     }
 }
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    return { props: {} };
+}
+
 export default AccountPage;
