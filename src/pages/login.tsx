@@ -101,6 +101,7 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
                             style={{ width: "35ch" }}
                             value={this.state.brugernavn}
                             onChange={this.onChangeUsername}
+                            onKeyDown={this.onKeyDownHandler}
                         />
                     </div>
 
