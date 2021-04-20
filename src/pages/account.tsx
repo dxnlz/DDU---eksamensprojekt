@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography, Button } from '@material-ui/core';
+import { GetServerSideProps } from "next";
 
 export interface AccountPageProps {
     profile: userProfile;
+}
+
+export interface AccountPageState {
 }
 
 export interface userProfile {

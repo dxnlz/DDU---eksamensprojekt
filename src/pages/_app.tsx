@@ -11,11 +11,7 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { ThemeProvider as MaterialThemeProvider, createMuiTheme, StylesProvider } from '@material-ui/core/styles';
 
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 
 import CookieConsent from 'react-cookie-consent';
