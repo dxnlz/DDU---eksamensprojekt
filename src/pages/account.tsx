@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography, Button } from '@material-ui/core';
 
+import { GetServerSideProps } from 'next';
+import Router from 'next/router';
+
 export interface AccountPageProps {
     profile: userProfile;
 }
@@ -9,17 +12,26 @@ export interface userProfile {
     userPicture: string;
 }
 
-class AccountPage extends Component<AccountPageProps, AccountPageState> {
+class AccountPage extends Component<AccountPageProps> {
     constructor(props: AccountPageProps) {
         super(props);
     }
 
+    componentDidMount() {
+        if(!this.props.profile.isLoggedIn) {
+            setTimeout(()=> {
+                Router.push('/login');
+            }, 1500)
+        }
+    }
+
     setHarambe = async () => {
         this.props.profile.userPicture = "https://www.telegraph.co.uk/content/dam/news/2016/11/09/99356270-Harambe-gorilla-us-election-votes_jpg_trans_NvBQzQNjv4BqqVzuuqpFlyLIwiB6NTmJwfSVWeZ_vEN7c6bHu2jJnT8.jpg";
-        console.log(this.props.profile.userPicture);
     }
 
     render() {
+        if(!this.props.profile.isLoggedIn)
+            return <div>You are not logged in. Redirecting to login page...</div>
         return (
             <div>
                 <div>
