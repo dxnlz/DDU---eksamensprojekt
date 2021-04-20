@@ -9,12 +9,12 @@ interface AdminPageProps {
 
 class AdminPage extends Component<AdminPageProps> {
   render() {
-    if(!this.props.profile.isAdmin || !this.props.profile.isLoggedIn)
-      return <Error statusCode={403} title="FORBIDDEN: This user doesn't have admin rights"/>
+    if (!this.props.profile.isAdmin || !this.props.profile.isLoggedIn)
+      return <Error statusCode={403} title="FORBIDDEN: This user doesn't have admin rights" />
     else
       return (
         <div>
-          Admin page, 
+          Admin page,
         </div>
       )
   }
