@@ -76,6 +76,11 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
         }
     }
 
+    onKeyDownHandler = e => {
+        if (e.keyCode === 13)
+        this.onLogin();
+      }
+
     render() {
         if(this.props.profile.isLoggedIn)
             return <div>You are already logged in. Redirecting...</div>
@@ -91,7 +96,7 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
                     <div className={styles.usernameField}>
                         <AccountCircle />
                         <TextField id="username"
-                            label="Brugernavn"
+                            label="Username"
                             variant="standard"
                             style={{ width: "35ch" }}
                             value={this.state.brugernavn}
@@ -108,6 +113,7 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
                                 type={this.state.showpassword ? 'text' : 'password'}
                                 value={this.state.password}
                                 onChange={this.onChangePassword}
+                                onKeyDown={this.onKeyDownHandler}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
