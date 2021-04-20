@@ -3,6 +3,7 @@ import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, 
 
 import { GetServerSideProps } from 'next';
 import Router from 'next/router';
+import { IProfileStatus } from '../lib/auth_helper';
 
 export interface AccountPageProps {
     profile: userProfile;
@@ -10,6 +11,7 @@ export interface AccountPageProps {
 
 export interface userProfile {
     userPicture: string;
+    isLoggedIn?: boolean;
 }
 
 class AccountPage extends Component<AccountPageProps> {
