@@ -6,12 +6,14 @@ import Image from 'next/image'
 
 import styles from '../styles/Signup.module.scss'
 import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@material-ui/core';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import { db_req } from '../lib/db_helper';
 
 interface SignupPageProps {
     profile: IProfileStatus;
     countries: {id: number, country_code: string, country_name: string}[];
     message?: string;
+    isMac?: boolean;
 }
 
 interface SignupPageState {
@@ -116,6 +118,18 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
                         InputLabelProps={{
                             shrink: true,
                         }} />
+                    { this.props.isMac? 
+			<KeyboardDatePicker
+          margin="normal"
+          id="date-picker-dialog"
+          label="Date picker dialog"
+          format="MM/dd/yyyy"
+          value={this.state.birthday}
+          onChange={value => this.setState({ birthday: value})}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        /> :
                     <TextField
                         name="birthday"
                         label="Fødselsdag"
@@ -125,7 +139,7 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                    />
+                    />}
                     <TextField
                         name="country"
                         select
@@ -197,8 +211,10 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    console.log(context.req.headers['user-agent'])
     return { props: {
-        countries: (await db_req("SELECT * FROM countries;")).rows
+        countries: (await db_req("SELECT * FROM countries;")).rows,
+        isMac: context.req.headers['user-agent'].match(/^((?!chrome|android|crios|fxios|iPhone).)*safari/i)
     } };
 }
 

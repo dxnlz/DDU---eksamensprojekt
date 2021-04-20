@@ -10,6 +10,14 @@ import Head from 'next/head';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { ThemeProvider as MaterialThemeProvider, createMuiTheme, StylesProvider } from '@material-ui/core/styles';
 
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+
 import CookieConsent from 'react-cookie-consent';
 import Header from '../components/Header'
 import { getCookie, GetProfileStatus, IProfileStatus } from '../lib/auth_helper';
@@ -31,15 +39,17 @@ class App extends NextApp {
       <StylesProvider injectFirst>
         <StyledThemeProvider theme={theme}>
           <MaterialThemeProvider theme={theme}>
-            <Head>
-              <title>Web shop</title>
-              <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <Header path={this.props.router.asPath} profile={(this.props as any).profile as IProfileStatus} />
-            <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
-            <div className={styles.root}>
-              <this.props.Component profile={(this.props as any).profile as IProfileStatus} {...this.props.pageProps} />
-            </div>
+	    <MuiPickersUtilsProvider utils={DateFnsUtils}>            
+              <Head>
+                <title>Web shop</title>
+                <link rel="icon" href="/favicon.ico" />
+              </Head>
+              <Header path={this.props.router.asPath} profile={(this.props as any).profile as IProfileStatus} />
+              <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
+              <div className={styles.root}>
+                <this.props.Component profile={(this.props as any).profile as IProfileStatus} {...this.props.pageProps} />
+              </div>
+            </MuiPickersUtilsProvider>
           </MaterialThemeProvider>
         </StyledThemeProvider>
       </StylesProvider>
