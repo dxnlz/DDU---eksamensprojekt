@@ -490,6 +490,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-tag-autocomplete@^5.6.0":
+  version "5.12.1"
+  resolved "https://registry.yarnpkg.com/@types/react-tag-autocomplete/-/react-tag-autocomplete-5.12.1.tgz#6b69da62bc4411aab1ae11987d9f919773031603"
+  integrity sha512-SiGazNOt9wVxO+evqXi2Hc9bh+lakIc/KD3tgWT9dDJIqzd529nMlriUGCDxi5zjlvuTxsIO4iZBKmwwOqP7XA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.2.0", "@types/react-transition-group@^4.4.1":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.1.tgz#e1a3cb278df7f47f17b5082b1b3da17170bd44b1"
@@ -1293,6 +1300,11 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
+dotenv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
 duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
@@ -1407,6 +1419,11 @@ es6-object-assign@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
   integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
+
+es6-promise@^4.2.8:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
+  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
 
 esbuild-loader@^2.12.0:
   version "2.12.0"
@@ -1715,6 +1732,11 @@ hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.2:
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+html-attributes@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/html-attributes/-/html-attributes-1.1.0.tgz#82027a4fac7a6070ea6c18cc3886aea18d6dea09"
+  integrity sha1-ggJ6T6x6YHDqbBjMOIauoY1t6gk=
 
 http-cache-semantics@^4.0.0:
   version "4.1.0"
@@ -2383,6 +2405,11 @@ minimist@^1.1.0, minimist@^1.2.0, minimist@^1.2.5:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 mqtt-packet@^6.6.0:
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/mqtt-packet/-/mqtt-packet-6.9.1.tgz#da741f9048affbe0b5e7d8289c42dc1f56a954c1"
@@ -2784,6 +2811,15 @@ pgpass@1.x:
   dependencies:
     split2 "^3.1.1"
 
+pick-react-known-prop@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/pick-react-known-prop/-/pick-react-known-prop-0.1.5.tgz#3a888f158b538ecc214ad01921054dc4148c328d"
+  integrity sha512-SnDf64AVdvqoAFpHeZUKT9kdn40Ellj84CPALRxYWqNJ6r6f44eAAT+Jtkb0Suhiw7yg5BdOFAQ25OJnjG+afw==
+  dependencies:
+    html-attributes "^1.1.0"
+    lodash.isplainobject "^4.0.6"
+    svg-attributes "^1.0.0"
+
 picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.3.tgz#465547f359ccc206d3c48e46a1bcb89bf7ee619d"
@@ -3085,6 +3121,23 @@ react-slider@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/react-slider/-/react-slider-1.1.4.tgz#08b55f9be3e04cc10ae00cc3aedb6891dffe9bf3"
   integrity sha512-lL/MvzFcDue0ztdJItwLqas2lOy8Gg46eCDGJc4cJGldThmBHcHfGQePgBgyY1SEN95OwsWAakd3SuI8RyixDQ==
+
+react-tabulator@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/react-tabulator/-/react-tabulator-0.15.0.tgz#a0af9bf2af65ff9ed43357ebd6be074b2c31af2e"
+  integrity sha512-YsaW0d7fvs7/0O+Cdsr60hqH4+j+SXv1vJSaFsyps8KeuQuNOzyuGVS9NCl0fqNk7DS9/T3KjkJYFvTKFsKz3A==
+  dependencies:
+    "@types/react-tag-autocomplete" "^5.6.0"
+    dotenv "^8.2.0"
+    es6-promise "^4.2.8"
+    pick-react-known-prop "^0.1.5"
+    react-tag-autocomplete "^5.7.1"
+    tabulator-tables "4.9.3"
+
+react-tag-autocomplete@^5.7.1:
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/react-tag-autocomplete/-/react-tag-autocomplete-5.13.1.tgz#9d3376cbbf66ce8901a62355ca35fd68a58abfc8"
+  integrity sha512-ECcQnizAxw8VnEDUfCKuA2ZDQ0Fyxds3kVtE4NVAhJvBYOMMgkRNAM3UwyEXAQ0h7nnCwmIA+czJiwso07Mrqw==
 
 react-transition-group@^4.0.0, react-transition-group@^4.4.0, react-transition-group@^4.4.1:
   version "4.4.1"
@@ -3508,10 +3561,20 @@ supports-color@^8.0.0:
   dependencies:
     has-flag "^4.0.0"
 
+svg-attributes@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/svg-attributes/-/svg-attributes-1.0.0.tgz#b5c5968f36247b7dbe3853207f2a9c68ad806bfc"
+  integrity sha1-tcWWjzYke32+OFMgfyqcaK2Aa/w=
+
 symbol-observable@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
   integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
+
+tabulator-tables@4.9.3:
+  version "4.9.3"
+  resolved "https://registry.yarnpkg.com/tabulator-tables/-/tabulator-tables-4.9.3.tgz#89ea8f9bffc11ba9a789369b5165ac82da26f4f0"
+  integrity sha512-iwwQqAEGGxlgrBpcmJJvMJrfjGLcCXOB3AOb/DGkXqBy1YKoYA36hIl7qXGp6Jo8dSkzFAlDT6pKLZgyhs9OnQ==
 
 term-size@^2.1.0:
   version "2.2.1"

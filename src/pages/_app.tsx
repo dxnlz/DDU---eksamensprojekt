@@ -1,5 +1,6 @@
 import '../styles/globals.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-tabulator/css/tabulator_simple.css'
 import styles from '../styles/Main.module.scss';
 
 import React from 'react'
