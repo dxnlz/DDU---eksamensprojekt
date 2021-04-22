@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppBar, Toolbar, Typography, Button, InputBase, Divider, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, Search } from '@material-ui/icons';
+import { AccountCircle, Search, ShoppingCart } from '@material-ui/icons';
 import styles from '../styles/Header.module.scss'
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
@@ -11,6 +11,12 @@ import { IProfileStatus } from '../lib/auth_helper';
 
 const createInputStyles = makeStyles((theme: Theme) =>
   createStyles({
+    cartIcon: {
+      position: 'sticky',
+      width: '100%',
+      display: 'flex',
+      marginLeft: 1200,
+    },
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
@@ -137,6 +143,15 @@ class Header extends Component<HeaderProps> {
             <BarItem text="Products" url="/products" path={this.props.path} />
             {this.props.profile.isAdmin ? <BarItem text="Admin" url="/admin" path={this.props.path} /> : <></>}
           </div>
+
+
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div className={inputstyles.cartIcon}></div>
+            <div>
+              <ShoppingCart onClick={() => alert("This is your cart")}/>
+            </div>
+          </div>
+
 
           <div style={{ display: "flex", alignItems: "center" }}>
             <div className={inputstyles.search}>
