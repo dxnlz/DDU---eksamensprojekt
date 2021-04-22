@@ -6,7 +6,7 @@ import formidable from 'formidable';
 import { IUser } from '../../lib/auth_helper'
 import { db_req } from '../../lib/db_helper'
 
-// Disable the build in Next.JS bodyparse since we are using formidable, as it has support for file upload
+// Disable the Next.JS bodyparser since we are using formidable, as it has support for file upload
 export const config = {
     api: {
         bodyParser: false

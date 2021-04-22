@@ -11,7 +11,7 @@ import { db_req } from '../lib/db_helper';
 
 interface SignupPageProps {
     profile: IProfileStatus;
-    countries: {id: number, country_code: string, country_name: string}[];
+    countries: { id: number, country_code: string, country_name: string }[];
     message?: string;
     isMac?: boolean;
 }
@@ -118,28 +118,28 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
                         InputLabelProps={{
                             shrink: true,
                         }} />
-                    { this.props.isMac? 
-			<KeyboardDatePicker
-          margin="normal"
-          id="date-picker-dialog"
-          label="Date picker dialog"
-          format="MM/dd/yyyy"
-          value={this.state.birthday}
-          onChange={value => this.setState({ birthday: value})}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        /> :
-                    <TextField
-                        name="birthday"
-                        label="Fødselsdag"
-                        type="date"
-                        value={this.state.birthday.toISOString().substr(0, 10)}
-                        onChange={e => this.setState({ birthday: new Date(e.target.value) })}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />}
+                    {this.props.isMac ?
+                        <KeyboardDatePicker
+                            margin="normal"
+                            id="date-picker-dialog"
+                            label="Date picker dialog"
+                            format="yyyy-MM-dd"
+                            value={this.state.birthday}
+                            onChange={value => this.setState({ birthday: value })}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                        /> :
+                        <TextField
+                            name="birthday"
+                            label="Fødselsdag"
+                            type="date"
+                            value={this.state.birthday.toISOString().substr(0, 10)}
+                            onChange={e => this.setState({ birthday: new Date(e.target.value) })}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />}
                     <TextField
                         name="country"
                         select
@@ -148,7 +148,7 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
                             native: true,
                         }}
                     >
-                         {this.props.countries.map((country) => (
+                        {this.props.countries.map((country) => (
                             <option key={country.id} value={country.id}>
                                 {country.country_name}
                             </option>
@@ -182,28 +182,6 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
                     </div>
                     <Button type="submit">Submit</Button>
                 </form>
-
-
-                {/* <MaterialUIForm>
-          {'Upload file: '}
-          <input accept="image/*" id="raised-button-file" multiple type="file" onChange={this.uploadFile} />
-          <label htmlFor="raised-button-file">
-            <Button variant="raised" component="span">Upload</Button>
-          </label>
-        </MaterialUIForm> */}
-
-                {/* <img
-                    src="/api/file/myfile.jpg"
-                    alt="Picture of the author"
-                    width={500}
-                    height={500}
-                />
-
-                <button type="button" onClick={this.onSignup}>Signup</button>
-                <button onClick={this.handleClick}>
-                    Click me
-      </button>
-       */}
             </div>
 
         )
@@ -212,10 +190,12 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     console.log(context.req.headers['user-agent'])
-    return { props: {
-        countries: (await db_req("SELECT * FROM countries;")).rows,
-        isMac: context.req.headers['user-agent'].match(/^((?!chrome|android|crios|fxios|iPhone).)*safari/i)
-    } };
+    return {
+        props: {
+            countries: (await db_req("SELECT * FROM countries;")).rows,
+            isMac: context.req.headers['user-agent'].match(/^((?!chrome|android|crios|fxios|iPhone).)*safari/i)
+        }
+    };
 }
 
 export default SignupPage;

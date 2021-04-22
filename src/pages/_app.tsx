@@ -36,7 +36,7 @@ class App extends NextApp {
       <StylesProvider injectFirst>
         <StyledThemeProvider theme={theme}>
           <MaterialThemeProvider theme={theme}>
-	    <MuiPickersUtilsProvider utils={DateFnsUtils}>            
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Head>
                 <title>Web shop</title>
                 <link rel="icon" href="/favicon.ico" />

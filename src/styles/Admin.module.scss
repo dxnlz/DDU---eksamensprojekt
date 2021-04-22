@@ -46,7 +46,7 @@
     background-color: #a5a5a5;
     padding-left: 1rem;
     height: 3rem;
-    border-bottom: medium solid white;
+    border-bottom: 3px dashed black;
     display: flex;
     align-items: center;
     border-top-left-radius: 4px;
@@ -58,41 +58,37 @@
     height: 36vh;
 }
 
-.loginContainer {
-    grid-row: 3;
-    grid-column: 2 / 4;
+.form {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 8vh;
-    gap: 1rem;
-}
-
-.signup {
-    grid-row: 4;
-    grid-column: 2;
-    display: flex;
-    align-items: flex-end;
-    margin: 0.5rem;
-    gap: 4px;
-    a {
-        color: rgb(37, 175, 255);
-        text-decoration: underline;
+    // align-items: center;
+    margin-top: 1rem;
+    margin-left: 7rem;
+    margin-right: 7rem;
+    & > div {
+        margin-top: 2rem;
     }
 }
 
-.loginButton {
-    grid-row: 4;
-    grid-column: 3;
+.formButtonGroup {
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    flex-direction: row-reverse;
     margin: 1rem;
-    margin-right: 2rem;
 }
 
-.usernameField {
-    display: flex;
-    align-items: flex-end;
+.submitButton {
+    background-color: green;
+    color: white;
+    text-transform: none;
+    width: 100;
 }
+
+.resetButton {
+    background-color: #8c8c8c; 
+    color: white;
+    text-transform: none;
+    width: 100;
+    margin-right: 1rem;
+}
+
