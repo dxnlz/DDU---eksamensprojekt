@@ -11,12 +11,12 @@ import { IProfileStatus } from '../lib/auth_helper';
 
 const createInputStyles = makeStyles((theme: Theme) =>
   createStyles({
-    cartIcon: {
-      position: 'sticky',
-      width: '100%',
-      display: 'flex',
-      marginLeft: 1200,
-    },
+    // cartIcon: {
+    //   position: 'sticky',
+    //   width: '100%',
+    //   display: 'flex',
+    //   marginLeft: 1200,
+    // },
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
@@ -144,15 +144,6 @@ class Header extends Component<HeaderProps> {
             {this.props.profile.isAdmin ? <BarItem text="Admin" url="/admin" path={this.props.path} /> : <></>}
           </div>
 
-
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div className={inputstyles.cartIcon}></div>
-            <div>
-              <ShoppingCart onClick={() => alert("This is your cart")}/>
-            </div>
-          </div>
-
-
           <div style={{ display: "flex", alignItems: "center" }}>
             <div className={inputstyles.search}>
               <div className={inputstyles.searchIcon}>
@@ -191,6 +182,16 @@ class Header extends Component<HeaderProps> {
               </>
               }
             </PopupState>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              style={{ marginLeft: "1rem" }}
+              onClick={() => alert("This is your cart")}
+            >
+              <ShoppingCart />
+            </IconButton>
           </div>
         </Toolbar>
       </AppBar>
