@@ -11,6 +11,12 @@ import { IProfileStatus } from '../lib/auth_helper';
 
 const createInputStyles = makeStyles((theme: Theme) =>
   createStyles({
+    cartIcon: {
+      position: 'sticky',
+      width: '100%',
+      display: 'flex',
+      marginLeft: 1200,
+    },
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
@@ -137,6 +143,15 @@ class Header extends Component<HeaderProps> {
             <BarItem text="Products" url="/products" path={this.props.path} />
             {this.props.profile.isAdmin ? <BarItem text="Admin" url="/admin" path={this.props.path} /> : <></>}
           </div>
+
+
+          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={inputstyles.cartIcon}></div>
+          <div>
+          <img src="https://svgur.com/i/LPc.svg" width="43" height="43" />
+          </div>
+          </div>
+
 
           <div style={{ display: "flex", alignItems: "center" }}>
             <div className={inputstyles.search}>
