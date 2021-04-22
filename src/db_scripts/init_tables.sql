@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "products"(
     "name" TEXT NOT NULL,
     "description" TEXT,
     "price" INTEGER NOT NULL,
-    "stock" INTEGER NOT NULL,
+    "stock" INTEGER NOT NULL CHECK (stock >= 0),
     "category" INTEGER,
     "image" bytea,
     "created" DATE NOT NULL,

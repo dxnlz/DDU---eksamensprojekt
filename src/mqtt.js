@@ -104,6 +104,9 @@ module.exports.listen = () => {
                                 new_stock_status = parseInt(stock_status);
                                 console.log(new_stock_status);
                                 new_stock_status -= the_amount;
+                                if(new_stock_status < 0){
+                                    new_stock_status = 0;
+                                }
                             })
 
                             callback();
