@@ -148,7 +148,7 @@ class Header extends Component<HeaderProps> {
           <div style={{ display: "flex", alignItems: "center" }}>
             <div className={inputstyles.cartIcon}></div>
             <div>
-              <ShoppingCart />
+              <ShoppingCart onClick={() => alert("This is your cart")}/>
             </div>
           </div>
 
