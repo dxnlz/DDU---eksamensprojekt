@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppBar, Toolbar, Typography, Button, InputBase, Divider, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { AccountCircle, Search } from '@material-ui/icons';
+import { AccountCircle, Search, ShoppingCart } from '@material-ui/icons';
 import styles from '../styles/Header.module.scss'
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
@@ -146,10 +146,10 @@ class Header extends Component<HeaderProps> {
 
 
           <div style={{ display: "flex", alignItems: "center" }}>
-          <div className={inputstyles.cartIcon}></div>
-          <div>
-          <img src="https://svgur.com/i/LPc.svg" width="43" height="43" />
-          </div>
+            <div className={inputstyles.cartIcon}></div>
+            <div>
+              <ShoppingCart />
+            </div>
           </div>
 
 
