@@ -3,19 +3,17 @@ import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, 
 import { GetServerSideProps } from "next";
 
 import Router from 'next/router';
-import { IProfileStatus } from '../lib/auth_helper';
+import { getCookie, GetProfileStatus, IProfileStatus, IUser } from '../lib/auth_helper';
+import { db_req } from '../lib/db_helper';
 
 export interface AccountPageProps {
-    profile: userProfile;
+    profile: IProfileStatus;
+    country: string;
+    user: IUser;
 }
 
 export interface AccountPageState {
     userPicture: string;
-}
-
-export interface userProfile {
-    userPicture: string;
-    isLoggedIn?: boolean;
 }
 
 class AccountPage extends Component<AccountPageProps, AccountPageState> {
@@ -47,6 +45,14 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
             <div>
                 <div>
                     <h1>Account Page</h1>
+                    <img src="https://linux.gred.al/api/profile.jpg"></img>
+                    <div>
+                    <Typography variant="body1"><b>Username: </b> {this.props.user.username}</Typography>
+                    <Typography variant="body1"><b>Country: </b> {this.props.user.country_name}</Typography>
+                    <Typography variant="body1"><b>Birthday: </b> {(this.props.user.birthday).split('T')[0]}</Typography>
+                    <Typography variant="body1"><b>Registered: </b> {(this.props.user.registered).split('T')[0]}</Typography>
+                    <Typography variant="body1"><b>Is this user an admin?: </b> {String(this.props.user.isadmin)}</Typography>
+                    </div>
                     <img src={this.state.userPicture} />
                 </div>
 
@@ -59,7 +65,11 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    return { props: {} };
+  let token = getCookie("token", context.req.headers.cookie);
+  let myprofile = GetProfileStatus(token);
+    return { props: {
+        user: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM users INNER JOIN countries ON users.country=countries.id WHERE username=$1;", [myprofile.username])).rows[0])),
+    } };
 }
 
 export default AccountPage;
