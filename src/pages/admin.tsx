@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { getCookie, GetProfileStatus, IProfileStatus, IUser } from "../lib/auth_helper";
 import Error from 'next/error'
 import styles from '../styles/Admin.module.scss'
-import Table from "../components/Table";
 import { ReactTabulator } from "react-tabulator";
 import { ICellProps } from "../components/Cell";
 import { db_req } from "../lib/db_helper";
