@@ -7,7 +7,6 @@ import { ReactTabulator } from "react-tabulator";
 import { ICellProps } from "../components/Cell";
 import { db_req } from "../lib/db_helper";
 import { Button, TextField } from "@material-ui/core";
-import { KeyboardDatePicker } from "@material-ui/pickers";
 import moment from 'moment'
 
 interface AdminPageProps {
@@ -15,6 +14,7 @@ interface AdminPageProps {
   users: IUser[];
   products: ICellProps[];
   categories: { id: number, name: string }[];
+  error?: string; 
 }
 
 interface AdminPageState {
@@ -42,7 +42,17 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
   }
 
   componentDidMount() {
-    window.moment = moment; // This is used for date formatting in tables
+    // @ts-expect-error: This is used for date formatting in tables
+    window.moment = moment;
+
+    // We make an alert, if any errors are present in query params
+    if(this.props.error) 
+      setTimeout(()=>alert(this.props.error),1);
+    
+  }
+
+  onSubmit = () => {
+    
   }
 
   render() {
@@ -81,7 +91,7 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
                 ))}
               </TextField>
               <TextField
-                name="picture"
+                name="image"
                 label="Billede"
                 type="file"
                 InputLabelProps={{
@@ -161,7 +171,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         users: JSON.parse(JSON.stringify((await db_req("SELECT users.id, username, birthday, country_name, isadmin FROM users INNER JOIN countries ON users.country=countries.id;")).rows)),
         products: JSON.parse(JSON.stringify((await db_req("SELECT products.id, products.name, category, categories.name as category_name, price, stock, description FROM products INNER JOIN categories ON products.category=categories.id;")).rows)),
-        categories: (await db_req("SELECT * FROM categories;")).rows
+        categories: (await db_req("SELECT * FROM categories;")).rows,
+        error: context.query["error"]? context.query["error"] : null
       }
     };
   else

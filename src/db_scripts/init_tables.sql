@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "products"(
     "price" INTEGER NOT NULL,
     "stock" INTEGER NOT NULL CHECK (stock >= 0),
     "category" INTEGER,
-    "image" bytea,
+    "image" TEXT,
     "created" DATE NOT NULL,
     "last_updated" DATE NOT NULL,
     PRIMARY KEY (id)
