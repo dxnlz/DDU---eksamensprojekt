@@ -5,6 +5,17 @@ import formidable from 'formidable';
 
 import { db_req } from '../../lib/db_helper'
 
+interface IProduct {
+    name?: string,
+    description?: string,
+    price?: number,
+    stock?: number,
+    category?: number,
+    image?: string,
+    created?: Date,
+    last_updated?: Date
+}
+
 // Disable Next.JS bodyparser
 export const config = {
     api: {
@@ -16,42 +27,77 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method != 'POST')
         return res.status(405).json({ status: 'error', error: 'Method not allowed' });
 
-    let user_data: IUser = {
-        id: undefined,
-        username: undefined,
-        registered: new Date(),
-        password: undefined,
-        isadmin: false
-    };
-
     const form = new formidable.IncomingForm({
         uploadDir: "/tmp",
         keepExtensions: true
     });
 
-    // We insert all the fields into user_data
+    let product: IProduct = {};
+
+    // We insert all the fields into products
     form.on('field', (field, value) => {
-        console.log(field + ": " + value)
+        if (field == "created" || field == "last_updated")
+            product[field] = new Date(value);
+        else if (field == "price" || field == "stock" || field == "category")
+            product[field] = Number(value);
+        else
+            product[field] = value;
     })
 
-    // We convert the recieved file into base64 and insert it into user_data
-    // TODO: We should build a data storage system for this instead of using the database
+    // Same with file
     form.on('file', async (formname, file) => {
-        console.log(formname + ": ", file)
+        if (formname == "image") {
+            try {
+                // TODO: This is horrible, since we block main thread while reading IO
+                product["image"] = fs.readFileSync(file.path, { encoding: 'base64' });
+            } catch (error) {
+                res.status(400).json({ status: 'error', error: 'Could not read image' });
+                res.end();
+            }
+        }
     })
 
-    // This is called when all the fields have been parsed and files loaded
+    // All fields and files are loaded
     form.on('end', async () => {
-        
+        console.log(product)
+        // Do validation on our data
+        if (!(product.name != undefined &&
+            product.price != undefined &&
+            product.description != undefined &&
+            product.stock != undefined &&
+            product.image != undefined &&
+            product.category != undefined)) {
+            res.writeHead(301, { location: "/admin?error=Missing%20Field" });
+            return res.end();
+        }
 
+        product.created = new Date();
+        product.last_updated = new Date();
+
+        try {
+            await db_req("INSERT INTO products (name, description, price, stock, category, image, created, last_updated) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [
+                product.name, 
+                product.description,
+                product.price,
+                product.stock,
+                product.category,
+                product.image,
+                product.created,
+                product.last_updated
+            ])
+        } catch (error) {
+            res.writeHead(301, { location: "/admin?error=Database%20error" });
+            return res.end();
+        }
+        
         res.writeHead(301, { location: "/admin" });
-	    return res.end();
+        return res.end();
     });
 
-    // We parse the form
+    // Parse the form
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            res.status(400).json({ status: 'error', error: 'Error parsing form' });
+            res.writeHead(301, { location: "/admin?error=Parse%20error" });
             return res.end();
         }
     });
