@@ -66,7 +66,11 @@ export default class ProductPage extends Component<ProductPageProps> {
                                 <div className={styles.productRight}>
                                     <div className={styles.productImage}>Image</div>
                                     <div className={styles.divider} />
-                                    <div className={styles.productReview}>Reviews</div>
+                                    <div className={styles.productReview}>
+                                        <div>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
