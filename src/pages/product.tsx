@@ -9,19 +9,60 @@ import Rating from '@material-ui/lab/Rating';
 import ModalImage from "react-modal-image";
 
 import styles from '../styles/Product.module.scss';
-import { db_req } from '../lib/db_helper'
-import { ICellProps } from '../components/Cell'
+import { db_req } from '../lib/db_helper';
+import { ICellProps } from '../components/Cell';
 import Draggable from "react-draggable";
+import Review, { IReview } from '../components/Review';
+import IProfileStatus from "../lib/auth_helper";
 
 interface ProductPageProps {
     id: number;
     product?: ICellProps;
+    reviews: IReview[];
+    profile: IProfileStatus;
 }
 
-const message = `Truncation should be conditionally applicable on this long line of text
- as this is a much longer line than what the container can support. `;
+
 
 export default class ProductPage extends Component<ProductPageProps> {
+
+    makeReview = async () => {
+        if (!this.props.profile.isLoggedIn) {
+            alert("You are not logged in");
+        }
+        if (this.props.profile.isLoggedIn) {
+            var review_prompt = prompt("Please enter your review:");
+            while (review_prompt == "") {
+                var review_prompt = prompt("Please enter your review:");
+            }
+
+            var stars_prompt = prompt("Please enter your rating:")
+            var starsParsed = parseInt(stars_prompt);
+
+            while (stars_prompt != null && Number(starsParsed) > 5 || Number(starsParsed) <= 0) {
+                alert("Please type a valid number");
+                var stars_prompt = prompt("Please enter your rating:")
+                var starsParsed = parseInt(stars_prompt);
+                while (isNaN(stars_prompt)) {
+                    alert("You typed a string");
+                    var stars_prompt = prompt("Please enter your rating:")
+                    var starsParsed = parseInt(stars_prompt);
+                }
+            }
+
+            if (review_prompt != null && !isNaN(starsParsed)) {
+                const reviewApi = await fetch(`/api/reviewInsert`, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ review: review_prompt, stars: stars_prompt, product: this.props.id }),
+                });
+            }
+        }
+    }
+
     render() {
         if (this.props.id == NaN || this.props.id == undefined)
             return (<DefaultErrorPage statusCode={404} />)
@@ -81,77 +122,12 @@ export default class ProductPage extends Component<ProductPageProps> {
                             <div className={styles.divider} />
                             <div className={styles.productReview}>
                                 <div>
-                                    <Paper className={styles.paper}>
-                                        <Grid container wrap="nowrap" spacing={2}>
-                                            <Grid item>
-                                                <Avatar>EB</Avatar>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography variant="h6">Emil Biørn</Typography>
-                                                <Typography>{message}</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                    <Paper className={styles.paper}>
-                                        <Grid container wrap="nowrap" spacing={2}>
-                                            <Grid item>
-                                                <Avatar>MG</Avatar>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography variant="h6">Mathias Gredal</Typography>
-                                                <Typography>nice men!</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                    <Paper className={styles.paper}>
-                                        <Grid container wrap="nowrap" spacing={2}>
-                                            <Grid item>
-                                                <Avatar>DS</Avatar>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography variant="h6">Daniel Schmidt</Typography>
-                                                <Typography>nice men!</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                    <Paper className={styles.paper}>
-                                        <Grid container wrap="nowrap" spacing={2}>
-                                            <Grid item>
-                                                <Avatar>NH</Avatar>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography variant="h6">Niklas Haim</Typography>
-                                                <Typography>nice men!</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                    <Paper className={styles.paper}>
-                                        <Grid container wrap="nowrap" spacing={2}>
-                                            <Grid item>
-                                                <Avatar>DJ</Avatar>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography variant="h6">David Jacobsen</Typography>
-                                                <Typography>nice men!</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                    <Paper className={styles.paper}>
-                                        <Grid container wrap="nowrap" spacing={2}>
-                                            <Grid item>
-                                                <Avatar>MG</Avatar>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography variant="h6">Mathias Gredal</Typography>
-                                                <Typography>nice men!</Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
+                                    {this.props.reviews.map((review) => (<Review {...review} />))}
                                 </div>
 
                             </div>
                             <Draggable defaultClassName={styles.actionBtn}>
-                                <Fab color="primary" aria-label="add" className={styles.actionBtn}>
+                                <Fab color="primary" aria-label="add" onClick={this.makeReview} className={styles.actionBtn}>
                                     <Add />
                                 </Fab>
                             </Draggable>
@@ -171,7 +147,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (Number.isSafeInteger(productId)) {
         let pageProps: ProductPageProps = {
             id: productId,
-            product: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE id = $1", [productId])).rows[0]))
+            product: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE id = $1", [productId])).rows[0])),
+            reviews: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM reviews WHERE product = $1", [productId])).rows))
         }
 
         return { props: pageProps };

@@ -43,9 +43,8 @@ COMMENT ON COLUMN
 
 CREATE TABLE IF NOT EXISTS "reviews"(
     "id" INT GENERATED ALWAYS AS IDENTITY,
-    "stars" INTEGER NOT NULL,
-    "title" TEXT NOT NULL,
-    "description" TEXT,
+    "stars" INTEGER NOT NULL CHECK (stars > 0) CHECK (stars <= 5),
+    "review" TEXT NOT NULL,
     "author" BIGINT NOT NULL REFERENCES users(id),
     "created" DATE NOT NULL,
     "product" INTEGER NOT NULL,

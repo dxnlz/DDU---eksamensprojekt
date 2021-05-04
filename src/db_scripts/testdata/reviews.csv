@@ -1,3 +1,4 @@
-id,stars,title,description,author,created,product,last_updated
-1,4,"This product is amazing","It is great",1,"2020-04-06",1,"2020-04-07"
-2,5,"This vodka is amazing","Good taste",123,"2020-04-06",3,"2020-04-07"
+id,stars,review,author,created,product,last_updated
+1,4,"This product is amazing. It is great",1,"2020-04-06",1,"2020-04-07"
+2,5,"This vodka is amazing. Good taste",123,"2020-04-06",3,"2020-04-07"
+3,5,"This vodka is dogshit. Bad taste",123,"2020-04-06",3,"2020-04-07"
