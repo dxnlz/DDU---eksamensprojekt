@@ -47,10 +47,11 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
                     <h1>Account Page</h1>
                     <img style={{borderRadius: 125}} height="250px" width="250px" src="https://linux.gred.al/api/profile.jpg"></img>
                     <div>
+                    <br></br>
                     <Typography variant="body1"><b>Username: </b> {this.props.user.username}</Typography>
-                    <Typography variant="body1"><b>Country: </b> {this.props.user.country_name}</Typography>
-                    <Typography variant="body1"><b>Birthday: </b> {(this.props.user.birthday).split('T')[0]}</Typography>
-                    <Typography variant="body1"><b>Registered: </b> {(this.props.user.registered).split('T')[0]}</Typography>
+                    <Typography variant="body1"><b>Country: </b> {(this.props.user as any).country_name}</Typography>
+                    <Typography variant="body1"><b>Birthday: </b> {(String(this.props.user.birthday)).split('T')[0]}</Typography>
+                    <Typography variant="body1"><b>Registered: </b> {(String(this.props.user.registered)).split('T')[0]}</Typography>
                     <Typography variant="body1"><b>Is this user an admin?: </b> {String(this.props.user.isadmin)}</Typography>
                     </div>
                     <img src={this.state.userPicture} />
