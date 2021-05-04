@@ -66,9 +66,15 @@ export default class ProductPage extends Component<ProductPageProps> {
 
                         </div>
                         <div className={styles.verticaldivider} />
-
-                        <div className={styles.productRight}>
-                            <div className={styles.productImage}>Image</div>
+                        <div className={styles.productRight}>                          
+                            <div className={styles.productImage}>
+                            <ModalImage
+                                small={'/api/product.jpg?id=' + this.props.id}
+                                large={'/api/product.jpg?id=' + this.props.id}
+                                alt={"Billede af " + this.props.product.name}
+                                showRotate hideZoom
+                            />
+                            </div>
                             <div className={styles.divider} />
                             <div className={styles.productReview}>
                                 <div>
@@ -140,16 +146,6 @@ export default class ProductPage extends Component<ProductPageProps> {
                                     </Paper>
                                 </div>
                             </div>
-                            <div className={styles.productImage}>
-                            <ModalImage
-                                small={'/api/product.jpg?id=' + this.props.id}
-                                large={'/api/product.jpg?id=' + this.props.id}
-                                alt={"Billede af " + this.props.product.name}
-                                showRotate hideZoom
-                            />
-                            </div>
-                            <div className={styles.divider} />
-                            <div className={styles.productReview}>Reviews</div>
                         </div>
 
                     </div>
