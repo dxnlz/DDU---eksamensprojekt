@@ -3,14 +3,15 @@ import React, { Component } from "react";
 import { GetServerSideProps } from "next";
 import DefaultErrorPage from 'next/error'
 
-import { Avatar, Button, Grid, Typography, Paper } from '@material-ui/core'
-import { ArrowBack } from '@material-ui/icons'
+import { Avatar, Button, Grid, Typography, Paper, Fab } from '@material-ui/core'
+import { ArrowBack, Add } from '@material-ui/icons'
 import Rating from '@material-ui/lab/Rating';
 import ModalImage from "react-modal-image";
 
 import styles from '../styles/Product.module.scss';
 import { db_req } from '../lib/db_helper'
 import { ICellProps } from '../components/Cell'
+import Draggable from "react-draggable";
 
 interface ProductPageProps {
     id: number;
@@ -50,6 +51,8 @@ export default class ProductPage extends Component<ProductPageProps> {
                         </div>
                     </div>
 
+
+
                     <div className={styles.productContainer}>
                         <div className={styles.productInfo}>
                             <Typography variant="h5">{this.props.product.name}</Typography>
@@ -66,14 +69,14 @@ export default class ProductPage extends Component<ProductPageProps> {
 
                         </div>
                         <div className={styles.verticaldivider} />
-                        <div className={styles.productRight}>                          
+                        <div className={styles.productRight}>
                             <div className={styles.productImage}>
-                            <ModalImage
-                                small={'/api/product.jpg?id=' + this.props.id}
-                                large={'/api/product.jpg?id=' + this.props.id}
-                                alt={"Billede af " + this.props.product.name}
-                                showRotate hideZoom
-                            />
+                                <ModalImage
+                                    small={'/api/product.jpg?id=' + this.props.id}
+                                    large={'/api/product.jpg?id=' + this.props.id}
+                                    alt={"Billede af " + this.props.product.name}
+                                    showRotate hideZoom
+                                />
                             </div>
                             <div className={styles.divider} />
                             <div className={styles.productReview}>
@@ -84,7 +87,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                                 <Avatar>EB</Avatar>
                                             </Grid>
                                             <Grid item xs>
-                                            <Typography variant="h6">Emil Biørn</Typography>
+                                                <Typography variant="h6">Emil Biørn</Typography>
                                                 <Typography>{message}</Typography>
                                             </Grid>
                                         </Grid>
@@ -95,7 +98,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                                 <Avatar>MG</Avatar>
                                             </Grid>
                                             <Grid item xs>
-                                            <Typography variant="h6">Mathias Gredal</Typography>
+                                                <Typography variant="h6">Mathias Gredal</Typography>
                                                 <Typography>nice men!</Typography>
                                             </Grid>
                                         </Grid>
@@ -106,7 +109,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                                 <Avatar>DS</Avatar>
                                             </Grid>
                                             <Grid item xs>
-                                            <Typography variant="h6">Daniel Schmidt</Typography>
+                                                <Typography variant="h6">Daniel Schmidt</Typography>
                                                 <Typography>nice men!</Typography>
                                             </Grid>
                                         </Grid>
@@ -117,7 +120,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                                 <Avatar>NH</Avatar>
                                             </Grid>
                                             <Grid item xs>
-                                            <Typography variant="h6">Niklas Haim</Typography>
+                                                <Typography variant="h6">Niklas Haim</Typography>
                                                 <Typography>nice men!</Typography>
                                             </Grid>
                                         </Grid>
@@ -128,7 +131,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                                                 <Avatar>DJ</Avatar>
                                             </Grid>
                                             <Grid item xs>
-                                            <Typography variant="h6">David Jacobsen</Typography>
+                                                <Typography variant="h6">David Jacobsen</Typography>
                                                 <Typography>nice men!</Typography>
                                             </Grid>
                                         </Grid>
@@ -139,13 +142,19 @@ export default class ProductPage extends Component<ProductPageProps> {
                                                 <Avatar>MG</Avatar>
                                             </Grid>
                                             <Grid item xs>
-                                            <Typography variant="h6">Mathias Gredal</Typography>
+                                                <Typography variant="h6">Mathias Gredal</Typography>
                                                 <Typography>nice men!</Typography>
                                             </Grid>
                                         </Grid>
                                     </Paper>
                                 </div>
+
                             </div>
+                            <Draggable defaultClassName={styles.actionBtn}>
+                                <Fab color="primary" aria-label="add" className={styles.actionBtn}>
+                                    <Add />
+                                </Fab>
+                            </Draggable>
                         </div>
 
                     </div>
