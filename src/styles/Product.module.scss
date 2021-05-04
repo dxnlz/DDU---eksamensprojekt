@@ -100,6 +100,12 @@
 .productImage {
     background-color: lightblue;
     flex: 1;
+    aspect-ratio: 23/9;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 
 .productReview {

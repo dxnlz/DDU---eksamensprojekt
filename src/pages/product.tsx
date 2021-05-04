@@ -6,6 +6,7 @@ import DefaultErrorPage from 'next/error'
 import { Avatar, Button, Grid, Typography, Paper } from '@material-ui/core'
 import { ArrowBack } from '@material-ui/icons'
 import Rating from '@material-ui/lab/Rating';
+import ModalImage from "react-modal-image";
 
 import styles from '../styles/Product.module.scss';
 import { db_req } from '../lib/db_helper'
@@ -38,7 +39,7 @@ export default class ProductPage extends Component<ProductPageProps> {
                             </div>
                             <div className={styles.divider} />
                             <div className={styles.form}>
-                                <form>
+                                <form method="POST" action={"/api/buyproduct?id=" + this.props.id}>
                                     <label className={styles.label} htmlFor="quantity">Quantity:</label>
                                     <input className={styles.input} type="number" id="quantity" name="quantity" min="1" max={this.props.product.stock}></input>
                                     <div>
@@ -139,6 +140,16 @@ export default class ProductPage extends Component<ProductPageProps> {
                                     </Paper>
                                 </div>
                             </div>
+                            <div className={styles.productImage}>
+                            <ModalImage
+                                small={'/api/product.jpg?id=' + this.props.id}
+                                large={'/api/product.jpg?id=' + this.props.id}
+                                alt={"Billede af " + this.props.product.name}
+                                showRotate hideZoom
+                            />
+                            </div>
+                            <div className={styles.divider} />
+                            <div className={styles.productReview}>Reviews</div>
                         </div>
 
                     </div>

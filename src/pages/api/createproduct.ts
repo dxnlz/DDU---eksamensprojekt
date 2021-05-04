@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import formidable from 'formidable';
 
 import { db_req } from '../../lib/db_helper'
+import { getCookie, GetProfileStatus } from '../../lib/auth_helper';
 
 interface IProduct {
     name?: string,
@@ -26,6 +27,14 @@ export const config = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method != 'POST')
         return res.status(405).json({ status: 'error', error: 'Method not allowed' });
+
+    let token = getCookie("token", req.headers.cookie);
+
+    if(!token) 
+        return res.status(403).json({ status: 'error', error: 'ERROR: FORBIDDEN. This incident will be reported, your IP is ' + req.socket.remoteAddress.replace(/^.*:/, '') });
+    else if(!GetProfileStatus(token).isAdmin) {
+        return res.status(403).json({ status: 'error', error: 'ERROR: FORBIDDEN. ' + GetProfileStatus(token).username + ' is not an admin user. This incident will be reported, your IP is ' + req.socket.remoteAddress.replace(/^.*:/, '') });
+    }
 
     const form = new formidable.IncomingForm({
         uploadDir: "/tmp",
