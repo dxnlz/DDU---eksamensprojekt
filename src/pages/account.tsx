@@ -45,7 +45,7 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
             <div>
                 <div>
                     <h1>Account Page</h1>
-                    <img src="https://linux.gred.al/api/profile.jpg"></img>
+                    <img style={{borderRadius: 125}} height="250px" width="250px" src="https://linux.gred.al/api/profile.jpg"></img>
                     <div>
                     <Typography variant="body1"><b>Username: </b> {this.props.user.username}</Typography>
                     <Typography variant="body1"><b>Country: </b> {this.props.user.country_name}</Typography>

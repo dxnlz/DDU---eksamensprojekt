@@ -6,6 +6,7 @@ import DefaultErrorPage from 'next/error'
 import { Button, Typography } from '@material-ui/core'
 import { ArrowBack } from '@material-ui/icons'
 import Rating from '@material-ui/lab/Rating';
+import ModalImage from "react-modal-image";
 
 import styles from '../styles/Product.module.scss';
 import { db_req } from '../lib/db_helper'
@@ -35,41 +36,48 @@ export default class ProductPage extends Component<ProductPageProps> {
                             </div>
                             <div className={styles.divider} />
                             <div className={styles.form}>
-                                <form>
+                                <form method="POST" action={"/api/buyproduct?id=" + this.props.id}>
                                     <label className={styles.label} htmlFor="quantity">Quantity:</label>
                                     <input className={styles.input} type="number" id="quantity" name="quantity" min="1" max={this.props.product.stock}></input>
                                     <div>
-                                    <Button variant="contained" color="primary" type="submit">BUY NOW!</Button>
+                                        <Button variant="contained" color="primary" type="submit">BUY NOW!</Button>
                                     </div>
                                 </form>
                             </div>
                         </div>
+                    </div>
+
+                    <div className={styles.productContainer}>
+                        <div className={styles.productInfo}>
+                            <Typography variant="h5">{this.props.product.name}</Typography>
+                            <hr />
+                            <b>Rating:</b>
+                            <br />
+                            <Rating name="size-large" defaultValue={2.4} size="large" style={{ color: "red" }} />
+                            <br />
+                            <b>Info:</b>
+                            <Typography variant="body1">
+                                <blockquote>{this.props.product.description}</blockquote></Typography>
+                            <Typography variant="body1"><b>Price:</b> {this.props.product.price} dkk</Typography>
+                            <Typography variant="body1"><b>Stock:</b> {this.props.product.stock}</Typography>
+
+                        </div>
+                        <div className={styles.verticaldivider} />
+
+                        <div className={styles.productRight}>
+                            <div className={styles.productImage}>
+                            <ModalImage
+                                small={'/api/product.jpg?id=' + this.props.id}
+                                large={'/api/product.jpg?id=' + this.props.id}
+                                alt={"Billede af " + this.props.product.name}
+                                showRotate hideZoom
+                            />
                             </div>
+                            <div className={styles.divider} />
+                            <div className={styles.productReview}>Reviews</div>
+                        </div>
 
-                            <div className={styles.productContainer}>
-                                <div className={styles.productInfo}>
-                                    <Typography variant="h5">{this.props.product.name}</Typography>
-                                    <hr />
-                                    <b>Rating:</b>
-                                    <br />
-                                    <Rating name="size-large" defaultValue={2.4} size="large" style={{ color: "red" }} />
-                                    <br />
-                                    <b>Info:</b>
-                                    <Typography variant="body1">
-                                        <blockquote>{this.props.product.description}</blockquote></Typography>
-                                    <Typography variant="body1"><b>Price:</b> {this.props.product.price} dkk</Typography>
-                                    <Typography variant="body1"><b>Stock:</b> {this.props.product.stock}</Typography>
-
-                                </div>
-                                <div className={styles.verticaldivider} />
-
-                                <div className={styles.productRight}>
-                                    <div className={styles.productImage}>Image</div>
-                                    <div className={styles.divider} />
-                                    <div className={styles.productReview}>Reviews</div>
-                                </div>
-
-                            </div>
+                    </div>
                 </main>
 
             </>
@@ -79,15 +87,15 @@ export default class ProductPage extends Component<ProductPageProps> {
 
 // This gets called on every request
 export const getServerSideProps: GetServerSideProps = async (context) => {
-                        let productId = Number(context.query["id"]);
+    let productId = Number(context.query["id"]);
     if (Number.isSafeInteger(productId)) {
-                        let pageProps: ProductPageProps = {
-                        id: productId,
+        let pageProps: ProductPageProps = {
+            id: productId,
             product: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products WHERE id = $1", [productId])).rows[0]))
         }
 
-        return {props: pageProps };
+        return { props: pageProps };
     }
 
-    return {props: {id: null } };
+    return { props: { id: null } };
 }

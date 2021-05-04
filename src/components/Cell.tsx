@@ -34,12 +34,12 @@ export default class Cell extends Component<ICellProps> {
                     subheader="September 14, 2016"
                 />
                 <CardMedia
-                    style={{ height: 100 }}
-                    image="/static/images/cards/paella.jpg"
+                    style={{ height: 150 }}
+                    image={"/api/product.jpg?id="+this.props.id}
                     title={this.props.name}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p"> {this.props.description}</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" style={{textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}> {this.props.description}</Typography>
                     <Typography variant="body2" color="textPrimary" component="p"><b>Price: </b>{this.props.price}kr.</Typography>
                     <Typography variant="body2" color="textPrimary" component="p"><b>Stock: </b> {this.props.stock} {this.props.stock === 1 ? "item" : "items"}</Typography>
                 </CardContent>
