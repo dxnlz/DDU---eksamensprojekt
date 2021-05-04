@@ -40,14 +40,14 @@ export default class ProductPage extends Component<ProductPageProps> {
             var starsParsed = parseInt(stars_prompt);
 
             while (stars_prompt != null && Number(starsParsed) > 5 || Number(starsParsed) <= 0) {
-                alert("Please type a valid number");
-                var stars_prompt = prompt("Please enter your rating:")
-                var starsParsed = parseInt(stars_prompt);
                 while (isNaN(stars_prompt)) {
                     alert("You typed a string");
                     var stars_prompt = prompt("Please enter your rating:")
                     var starsParsed = parseInt(stars_prompt);
                 }
+                alert("Please type a valid number");
+                var stars_prompt = prompt("Please enter your rating:")
+                var starsParsed = parseInt(stars_prompt);
             }
 
             if (review_prompt != null && !isNaN(starsParsed)) {
