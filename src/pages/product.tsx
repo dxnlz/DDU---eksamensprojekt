@@ -175,11 +175,9 @@ export default class ProductPage extends Component<ProductPageProps> {
 							</div>
 							<div className={styles.divider} />
 							<div className={styles.productReview}>
-								<div>
 									{this.props.reviews.map((review) => (
 										<Review {...review} />
 									))}
-								</div>
 							</div>
 							<Draggable defaultClassName={styles.actionBtn}>
 								<Fab

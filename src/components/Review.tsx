@@ -15,8 +15,8 @@ export interface IReview {
 export default class Review extends Component<IReview> {
     render() {
         return (
-            <Paper key={this.props.id} className={styles.paper}>
-                <Grid container wrap="nowrap" spacing={2}>
+            <Paper key={this.props.id}>
+                <Grid container wrap="nowrap" spacing={2} className={styles.paper}>
                     <Grid item>
                         <Avatar>EB</Avatar>
                     </Grid>

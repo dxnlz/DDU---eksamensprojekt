@@ -1,9 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { Component } from "react";
-import {
-	IProfileStatus,
-	IUser,
-} from "../lib/auth_helper";
+import { IProfileStatus, IUser } from "../lib/auth_helper";
 import Error from "next/error";
 import styles from "../styles/Admin.module.scss";
 import { ReactTabulator } from "react-tabulator";
@@ -51,7 +48,59 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 		if (this.props.error) setTimeout(() => alert(this.props.error), 1);
 	}
 
-	onSubmit = () => {};
+	resetProduct = () => {
+		this.setState({
+			name: "",
+			description: "",
+			price: 0,
+			stock: 0,
+			category: 0,
+		});
+	};
+
+	onProductSelect = (row: number) => {
+		if (this.state.userRow == undefined)
+			this.setState({
+				userRow: row,
+			});
+		else if (this.state.userRow != row) {
+			this.state.userRow.deselect();
+			this.setState({
+				userRow: row,
+			});
+		}
+
+		this.setState({
+			name: this.state.userRow._row.data["name"],
+			description: this.state.userRow._row.data["description"],
+			price: this.state.userRow._row.data["price"],
+			stock: this.state.userRow._row.data["stock"],
+			category: this.state.userRow._row.data["category"],
+		});
+	};
+
+	onProductDeselect = (row: number) => {
+		this.setState({
+			userRow: undefined,
+		});
+
+		this.resetProduct();
+	};
+
+	onSubmit = () => {
+    if(!this.state.userRow)
+      return;
+      
+    let form = document.getElementById('productform') as HTMLFormElement;
+
+    let input = document.createElement('input');
+    input.setAttribute('name', 'UpdateID');
+    input.setAttribute('value', this.state.userRow._row.data["id"]);
+    input.setAttribute('type', 'hidden')
+    form.appendChild(input);
+
+    form.submit();
+  };
 
 	render() {
 		if (!this.props.profile.isAdmin || !this.props.profile.isLoggedIn)
@@ -69,6 +118,7 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 							{this.state.userRow ? "Edit" : "Create"} product
 						</div>
 						<form
+              id="productform"
 							className={styles.form}
 							method="POST"
 							action="/api/createproduct"
@@ -158,22 +208,24 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 							/>
 							<div style={{ flex: 1 }} />
 							<div className={styles.formButtonGroup}>
-								<Button
-									variant="contained"
-									className={styles.submitButton}
-									type="submit"
-								>
-									Create
-								</Button>
-								<Button
-									variant="contained"
-									className={styles.resetButton}
-								>
-									Reset
-								</Button>
+								<div style={{ display: "flex" }}>
+									<Button
+										variant="contained"
+										className={styles.resetButton}
+									>
+										Reset
+									</Button>
+									<Button
+										variant="contained"
+										className={styles.submitButton}
+										type="submit"
+									>
+										{this.state.userRow ? "Update" : "Create" }
+									</Button>
+								</div>
+								{this.state.userRow ? (<Button variant="contained" color="secondary">Delete</Button>) : (<></>)}
 							</div>
 						</form>
-						{/* {this.state.userRow ? JSON.stringify(this.state.userRow._row.data, null, 4) : "Nothing"} */}
 					</div>
 
 					<div className={`${styles.product} ${styles.tile}`}>
@@ -197,24 +249,8 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 							]}
 							options={{
 								selectable: true,
-								rowSelected: (row) => {
-									console.log(row._row);
-									if (this.state.userRow == undefined)
-										this.setState({
-											userRow: row,
-										});
-									else if (this.state.userRow != row) {
-										this.state.userRow.deselect();
-										this.setState({
-											userRow: row,
-										});
-									}
-								},
-								rowDeselected: (row) => {
-									this.setState({
-										userRow: undefined,
-									});
-								},
+								rowSelected: this.onProductSelect,
+								rowDeselected: this.onProductDeselect,
 							}}
 							data={
 								this.props.products ? this.props.products : []
