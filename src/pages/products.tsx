@@ -220,7 +220,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let { getCookie, GetProfileStatus } = await import("../lib/auth_helper");
 	let { db_req } = await import("../lib/db_helper");
 
-	let searchTerm = context.query["search"] ? context.query["search"] : "";
+	let searchTerm = context.query["search"] ? String(context.query["search"]) : "";
 
 	let pageProps: ProductsPageProps = {
 		filter: {
