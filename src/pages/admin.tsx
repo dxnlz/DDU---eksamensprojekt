@@ -90,7 +90,7 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 	onSubmit = () => {
     if(!this.state.userRow)
       return;
-      
+
     let form = document.getElementById('productform') as HTMLFormElement;
 
     let input = document.createElement('input');
@@ -223,7 +223,12 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 										{this.state.userRow ? "Update" : "Create" }
 									</Button>
 								</div>
-								{this.state.userRow ? (<Button variant="contained" color="secondary">Delete</Button>) : (<></>)}
+								{this.state.userRow ? (
+                <form method="POST"
+                action={"/api/deleteproduct?id="+this.state.userRow._row.data["id"]}>
+<Button variant="contained" color="secondary" type="submit">Delete</Button>
+                </form>
+                ) : (<></>)}
 							</div>
 						</form>
 					</div>
