@@ -10,12 +10,6 @@ import { IProfileStatus } from '../lib/auth_helper';
 
 const createInputStyles = makeStyles((theme: Theme) =>
   createStyles({
-    // cartIcon: {
-    //   position: 'sticky',
-    //   width: '100%',
-    //   display: 'flex',
-    //   marginLeft: 1200,
-    // },
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
@@ -100,7 +94,14 @@ interface HeaderProps {
   profile: IProfileStatus;
 }
 
-class Header extends Component<HeaderProps> {
+interface HeaderState {
+  search: string;
+}
+
+class Header extends Component<HeaderProps, HeaderState> {
+  state = {
+    search: ""
+  }
   onLogout = (popupState: any) => {
     popupState.close();
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -147,10 +148,11 @@ class Header extends Component<HeaderProps> {
                   input: inputstyles.inputInput
                 }}
                 inputProps={{ 'aria-label': 'search' }}
+                onChange={(event)=>this.setState({search: event.target.value})}
+                value={this.state.search}
                 onKeyPress={(ev) => {
-                  console.log(`Pressed keyCode ${ev.key}`);
                   if (ev.key === 'Enter') {
-                    window.location.href = '/search'
+                    window.location.href = '/products?search='+this.state.search
                   }
                 }}
               />
