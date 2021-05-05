@@ -5,7 +5,6 @@ import styles from '../styles/Header.module.scss'
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
-import Link from 'next/link'
 import Router from 'next/router';
 import { IProfileStatus } from '../lib/auth_helper';
 
@@ -64,25 +63,32 @@ interface ItemProps {
   url: string;
   path?: string;
 }
-class BarItem extends React.Component<ItemProps> {
+
+
+class DropItem extends React.Component<ItemProps> {
   render() {
-    const buttonDisabled = this.props.path == this.props.url;
     return (
-      <Link href={this.props.url} passHref>
-        <Button className={styles.menuitem} color={buttonDisabled ? "inherit" : "primary"} disableElevation variant="outlined" >{this.props.text}</Button>
-      </Link>
+      <a style={{textDecoration: "none", color: "inherit"}} href={this.props.url}>
+        <MenuItem key={this.props.url}>{this.props.text}</MenuItem>
+      </a>
     );
   }
 }
 
+class BarItem extends React.Component<ItemProps> {
+  render() {
+    const buttonDisabled = this.props.path == this.props.url;
+    return (
+      <Button href={this.props.url} className={styles.menuitem} color={buttonDisabled ? "inherit" : "primary"} disableElevation variant="outlined" >{this.props.text}</Button>
+    );
+  }
+}
 class TitleItem extends React.Component<ItemProps> {
   render() {
     return (
-      <Link href={this.props.url} passHref>
-        <Button className={styles.title} color="inherit" >
-          <Typography variant="h5">{this.props.text}</Typography>
-        </Button>
-      </Link>
+      <Button href={this.props.url} className={styles.title} color="inherit" >
+        <Typography variant="h5">{this.props.text}</Typography>
+      </Button>
     );
   }
 }
@@ -101,36 +107,21 @@ class Header extends Component<HeaderProps> {
     Router.push("/")
   }
 
-  onLogin = (popupState: any) => {
-    popupState.close();
-  }
-
-  onSignup = (popupState: any) => {
-    popupState.close();
-  }
-
   loggedInMenu = (popupState: any) =>
     [
       <div key="name" style={{ flex: 1, alignItems: "center", display: "flex", gap: 4, marginBottom: 8, marginLeft: 8, marginRight: 8 }}>
         <AccountCircle /> {this.props.profile.username}
       </div>,
       <Divider key="divider"></Divider>,
-      <Link href="/account" passHref>
-        <MenuItem key="account" onClick={popupState.close}>Account</MenuItem>
-      </Link>,
+      <DropItem text="Account" url="/account"/>,
       <MenuItem key="logout" onClick={() => this.onLogout(popupState)}>Log out</MenuItem>
     ]
 
 
   loggedOutMenu = (popupState: any) => [
-    <Link href="/login" passHref>
-      <MenuItem key="login" onClick={() => this.onLogin(popupState)}>Log in</MenuItem>
-    </Link>,
-    <Link href="/signup" passHref>
-      <MenuItem key="signup" onClick={() => this.onLogout(popupState)}>Sign up</MenuItem>
-    </Link>
+    <DropItem text="Log in" url="/login"/>,
+    <DropItem text="Sign up" url="/signup"/>
   ]
-
 
   render() {
     const inputstyles = this.props.inputstyles;

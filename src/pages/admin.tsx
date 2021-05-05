@@ -164,6 +164,9 @@ class AdminPage extends Component<AdminPageProps, AdminPageState> {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  let {getCookie, GetProfileStatus} = await import('../lib/auth_helper');
+  let {db_req} = await import('../lib/db_helper');
+  
   let token = getCookie("token", context.req.headers.cookie);
   let myprofile = GetProfileStatus(token);
   if (myprofile.isAdmin)

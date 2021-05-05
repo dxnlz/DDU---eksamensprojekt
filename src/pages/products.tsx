@@ -139,7 +139,10 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 }
 
 // This gets called on every request
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {    
+    let {getCookie, GetProfileStatus} = await import('../lib/auth_helper');
+    let {db_req} = await import('../lib/db_helper');
+
     let pageProps: ProductsPageProps = {
         filter: {
             catId: Number(context.query["catid"]),
@@ -148,12 +151,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             minStock: Number(context.query["minstock"])
         },
         categories: await (await db_req("SELECT * FROM categories;")).rows,
-        products: JSON.parse(JSON.stringify(await (await db_req("SELECT * FROM products;")).rows)),
+        products: JSON.parse(JSON.stringify((await db_req("SELECT * FROM products;")).rows)),
         maxPrice: await (await db_req("SELECT price FROM products WHERE price >= ALL(SELECT price FROM products);")).rows[0].price,
         maxStock: await (await db_req("SELECT stock FROM products WHERE stock >= ALL(SELECT stock FROM products);")).rows[0].stock
     }
 
+    if (!Number.isSafeInteger(pageProps.filter.catId)) {
+        console.log("CATID BECOMES NAN")
+        pageProps.filter.catId = Number.NaN;
 
+    }
     if (!Number.isSafeInteger(pageProps.filter.maxPrice))
         pageProps.filter.maxPrice = pageProps.maxPrice;
     if (!Number.isSafeInteger(pageProps.filter.minPrice))

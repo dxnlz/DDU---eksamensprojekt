@@ -189,6 +189,9 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    let {getCookie, GetProfileStatus} = await import('../lib/auth_helper');
+    let {db_req} = await import('../lib/db_helper');
+    
     console.log(context.req.headers['user-agent'])
     return {
         props: {

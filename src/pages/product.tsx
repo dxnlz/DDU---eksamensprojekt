@@ -92,8 +92,6 @@ export default class ProductPage extends Component<ProductPageProps> {
                         </div>
                     </div>
 
-
-
                     <div className={styles.productContainer}>
                         <div className={styles.productInfo}>
                             <Typography variant="h5">{this.props.product.name}</Typography>
@@ -143,6 +141,9 @@ export default class ProductPage extends Component<ProductPageProps> {
 
 // This gets called on every request
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    let { getCookie, GetProfileStatus } = await import('../lib/auth_helper');
+    let { db_req } = await import('../lib/db_helper');
+
     let productId = Number(context.query["id"]);
     if (Number.isSafeInteger(productId)) {
         let pageProps: ProductPageProps = {

@@ -35,19 +35,17 @@ export default class Cell extends Component<ICellProps> {
                 />
                 <CardMedia
                     style={{ height: 150 }}
-                    image={"/api/product.jpg?id="+this.props.id}
+                    image={"/api/product.jpg?id=" + this.props.id}
                     title={this.props.name}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p" style={{textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}> {this.props.description}</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}> {this.props.description}</Typography>
                     <Typography variant="body2" color="textPrimary" component="p"><b>Price: </b>{this.props.price}kr.</Typography>
                     <Typography variant="body2" color="textPrimary" component="p"><b>Stock: </b> {this.props.stock} {this.props.stock === 1 ? "item" : "items"}</Typography>
                 </CardContent>
                 <CardActions style={{ justifyContent: "space-between", marginTop: "-20px" }}>
                     <div>
-                        <Link href={"/product?id=" + this.props.id} passHref>
-                            <Button style={{ marginLeft: "8px" }} variant="contained" color="primary">View</Button>
-                        </Link>
+                        <Button href={"/product?id=" + this.props.id} style={{ marginLeft: "8px" }} variant="contained" color="primary">View</Button>
                     </div>
 
                     <div>

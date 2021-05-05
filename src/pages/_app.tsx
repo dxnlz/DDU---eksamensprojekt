@@ -17,11 +17,17 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import CookieConsent from 'react-cookie-consent';
 import Header from '../components/Header'
-import { getCookie, GetProfileStatus, IProfileStatus } from '../lib/auth_helper';
+import { IProfileStatus } from '../lib/auth_helper';
 
 const theme = {
   primary: '#ffaabb',
-  ...createMuiTheme()
+  ...createMuiTheme({      
+    typography: {
+      button: {
+        textTransform: 'none'
+      }
+    }
+  })
 }
 
 class App extends NextApp {
@@ -57,10 +63,27 @@ class App extends NextApp {
 
 
 App.getInitialProps = async (appContext) => {
-  const appProps = await NextApp.getInitialProps(appContext);
-  let token = getCookie("token", appContext.ctx.req.headers.cookie);
-  let myprofile = GetProfileStatus(token);
-  return { profile: myprofile, ...appProps }
+  if(typeof window !== 'undefined') {
+    // This was called from the browser, we get the profile through the api
+    const appProps = await NextApp.getInitialProps(appContext);
+    if (!Object.keys(appProps.pageProps).length) {
+      delete appProps.pageProps;
+    }
+    let myprofile: IProfileStatus = await (await fetch('/api/profile')).json();
+    return { profile: myprofile, ...appProps }
+  }
+  else {
+    // This was called from the server, so we can get the profile directly
+    let {getCookie, GetProfileStatus} = await import('../lib/auth_helper');
+
+    const appProps = await NextApp.getInitialProps(appContext);
+    if (!Object.keys(appProps.pageProps).length) {
+      delete appProps.pageProps;
+    }
+    let token = getCookie("token", appContext.ctx.req.headers.cookie);
+    let myprofile = GetProfileStatus(token);
+    return { profile: myprofile, ...appProps }
+  }
 }
 
 export default App;

@@ -3,8 +3,7 @@ import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, 
 import { GetServerSideProps } from "next";
 
 import Router from 'next/router';
-import { getCookie, GetProfileStatus, IProfileStatus, IUser } from '../lib/auth_helper';
-import { db_req } from '../lib/db_helper';
+import { IProfileStatus, IUser } from '../lib/auth_helper';
 
 export interface AccountPageProps {
     profile: IProfileStatus;
@@ -66,6 +65,10 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    console.log("HELLO")
+    let {getCookie, GetProfileStatus} = await import('../lib/auth_helper');
+    let {db_req} = await import('../lib/db_helper');
+
   let token = getCookie("token", context.req.headers.cookie);
   let myprofile = GetProfileStatus(token);
     return { props: {
