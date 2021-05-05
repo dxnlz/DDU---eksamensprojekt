@@ -13,13 +13,13 @@ import { db_req } from '../lib/db_helper';
 import { ICellProps } from '../components/Cell';
 import Draggable from "react-draggable";
 import Review, { IReview } from '../components/Review';
-import IProfileStatus from "../lib/auth_helper";
+import { IProfileStatus } from "../lib/auth_helper";
 
 interface ProductPageProps {
     id: number;
     product?: ICellProps;
     reviews: IReview[];
-    profile: IProfileStatus;
+    profile?: IProfileStatus;
 }
 
 
@@ -38,19 +38,19 @@ export default class ProductPage extends Component<ProductPageProps> {
 
             var stars_prompt = prompt("Please enter your rating:")
             var starsParsed = parseInt(stars_prompt);
-            
+
             while (stars_prompt != null && Number(starsParsed) > 5 || Number(starsParsed) <= 0) {
-                    alert("Please type a valid number");
-                    var stars_prompt = prompt("Please enter your rating:")
-                    var starsParsed = parseInt(stars_prompt);
-                    while(isNaN(stars_prompt)){
-                        alert("You typed a string");
-                    var stars_prompt = prompt("Please enter your rating:")
-                    var starsParsed = parseInt(stars_prompt);
-                    }
+                alert("Please type a valid number");
+                var stars_prompt = prompt("Please enter your rating:")
+                var starsParsed = parseInt(stars_prompt);
+                while (isNaN(starsParsed)) {
+                    alert("You typed a string");
+                    stars_prompt = prompt("Please enter your rating:")
+                    starsParsed = parseInt(stars_prompt);
+                }
             }
 
-            if (review_prompt != null && !isNaN(starsParsed)){
+            if (review_prompt != null && !isNaN(starsParsed)) {
                 const reviewApi = await fetch(`/api/reviewInsert`, {
                     method: 'POST',
                     headers: {
