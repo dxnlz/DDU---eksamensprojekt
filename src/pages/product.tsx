@@ -78,8 +78,7 @@ export default class ProductPage extends Component<ProductPageProps> {
 			return <DefaultErrorPage statusCode={404} />;
 
 		return (
-			<>
-				<main className={styles.content}>
+			<main className={styles.content}>
 					<div className={styles.left}>
 						<Button
 							onClick={() => window.history.back()}
@@ -159,7 +158,8 @@ export default class ProductPage extends Component<ProductPageProps> {
 						<div className={styles.verticaldivider} />
 						<div className={styles.productRight}>
 							<div className={styles.productImage}>
-								<ModalImage
+                                <div className={styles.childImage}>
+                                <ModalImage
 									small={
 										"/api/product.jpg?id=" + this.props.id
 									}
@@ -172,6 +172,8 @@ export default class ProductPage extends Component<ProductPageProps> {
 									showRotate
 									hideZoom
 								/>
+                                </div>
+								
 							</div>
 							<div className={styles.divider} />
 							<div className={styles.productReview}>
@@ -192,7 +194,6 @@ export default class ProductPage extends Component<ProductPageProps> {
 						</div>
 					</div>
 				</main>
-			</>
 		);
 	}
 }

@@ -175,7 +175,7 @@ class Header extends Component<HeaderProps, HeaderState> {
               </>
               }
             </PopupState>
-            <IconButton
+            {/* <IconButton
               aria-label="account of current user"
               aria-controls="primary-search-account-menu"
               aria-haspopup="true"
@@ -184,7 +184,7 @@ class Header extends Component<HeaderProps, HeaderState> {
               onClick={() => alert("This is your cart")}
             >
               <ShoppingCart />
-            </IconButton>
+            </IconButton> */}
           </div>
         </Toolbar>
       </AppBar>

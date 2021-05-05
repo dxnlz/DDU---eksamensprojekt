@@ -45,7 +45,7 @@ class App extends NextApp {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Head>
                 <title>Web shop</title>
-                <link rel="icon" href="/favicon.ico" />
+                <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
               </Head>
               <Header path={this.props.router.asPath} profile={(this.props as any).profile as IProfileStatus} />
               <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>

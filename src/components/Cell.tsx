@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Card, CardHeader, CardMedia, CardContent, CardActions, IconButton, Typography } from '@material-ui/core';
 import { Favorite, Share, MoreVert } from '@material-ui/icons';
+import { format } from 'date-fns'
 import Link from 'next/link';
 
 export interface ICellProps {
@@ -31,7 +32,7 @@ export default class Cell extends Component<ICellProps> {
                     }
                     title={this.props.name}
                     titleTypographyProps={{ variant: 'h6', component: "b" }}
-                    subheader="September 14, 2016"
+                    subheader={format(new Date(this.props.created), "MMMM d, yyyy")}
                 />
                 <CardMedia
                     style={{ height: 150 }}

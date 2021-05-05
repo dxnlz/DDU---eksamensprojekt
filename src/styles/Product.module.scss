@@ -71,6 +71,7 @@
   border-radius: 4px;
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
   flex-direction: row;
+  height: 88vh;
 }
 
 
@@ -89,23 +90,28 @@
 
 
 .productRight {
-    display: flex;
     flex-direction: column;
     background-color: lightblue;
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
     width: 40vw;
+    display: grid;
+    grid-template-rows: auto auto;
 }
 
 .productImage {
+  grid-row: 1;
     background-color: lightblue;
     flex: 1;
-    aspect-ratio: 23/9;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: center;
+}
 
+.childImage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .actionBtn {
@@ -116,8 +122,8 @@
 }
 
 .productReview {
+  grid-row: 2;
     background-color: yellowgreen;
-    height: 40vh;
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 0.5rem;

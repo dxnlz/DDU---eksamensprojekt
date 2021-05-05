@@ -34,9 +34,8 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 			var searchParams = new URLSearchParams(window.location.search);
 			searchParams.set("minprice", String(priceRange[0]));
 			searchParams.set("maxprice", String(priceRange[1]));
-			var newRelativePathQuery =
-				window.location.pathname + "?" + searchParams.toString();
-			history.pushState(null, "", newRelativePathQuery);
+			var newRelativePathQuery = window.location.pathname + "?" + searchParams.toString();
+            history.replaceState(null, "", newRelativePathQuery);
 		}
 		this.props.filter.minPrice = priceRange[0];
 		this.props.filter.maxPrice = priceRange[1];
@@ -49,7 +48,7 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 			searchParams.set("minstock", String(minStock));
 			var newRelativePathQuery =
 				window.location.pathname + "?" + searchParams.toString();
-			history.pushState(null, "", newRelativePathQuery);
+			history.replaceState(null, "", newRelativePathQuery);
 		}
 		this.props.filter.minStock = minStock;
 		this.setState({});
@@ -63,7 +62,7 @@ export default class ProductsPage extends Component<ProductsPageProps> {
 			else searchParams.set("catid", String(catId));
 			var newRelativePathQuery =
 				window.location.pathname + "?" + searchParams.toString();
-			history.pushState(null, "", newRelativePathQuery);
+			history.replaceState(null, "", newRelativePathQuery);
 		}
 		this.props.filter.catId = catId;
 		this.setState({});
