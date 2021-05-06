@@ -95,12 +95,10 @@
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
     width: 40vw;
-    display: grid;
-    grid-template-rows: auto auto;
+    display: flex;
 }
 
 .productImage {
-  grid-row: 1;
     background-color: lightblue;
     flex: 1;
     overflow: hidden;
@@ -122,7 +120,8 @@
 }
 
 .productReview {
-  grid-row: 2;
+  flex: 1;
+
     background-color: yellowgreen;
     overflow-y: scroll;
     overflow-x: hidden;
