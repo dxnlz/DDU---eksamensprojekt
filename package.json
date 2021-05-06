@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node src/server.js"
+    "start": "Set NODE_ENV=production&node src/server.js"
   },
   "dependencies": {
     "@date-io/date-fns": "1.3.13",
