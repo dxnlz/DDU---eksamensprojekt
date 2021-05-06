@@ -65,7 +65,7 @@ class AccountPage extends Component<AccountPageProps, AccountPageState> {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    console.log("HELLO")
+    console.log("HELLO - Gredal 2k21")
     let {getCookie, GetProfileStatus} = await import('../lib/auth_helper');
     let {db_req} = await import('../lib/db_helper');
 

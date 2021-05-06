@@ -10,6 +10,7 @@ export interface IReview {
     created: Date;
     product: number;
     last_updated: Date;
+    username: string;
 }
 
 export default class Review extends Component<IReview> {
@@ -18,10 +19,10 @@ export default class Review extends Component<IReview> {
             <Paper key={this.props.id}>
                 <Grid container wrap="nowrap" spacing={2} className={styles.paper}>
                     <Grid item>
-                        <Avatar>EB</Avatar>
+                        <Avatar src={"/api/profile.jpg?id=" + this.props.id}/>
                     </Grid>
                     <Grid item xs>
-                        <Typography variant="h6">{this.props.author}</Typography>
+                        <Typography variant="h6">{this.props.username}</Typography>
                         <Typography>{this.props.review}</Typography>
                         <Typography>Rating: {this.props.stars}</Typography>
                     </Grid>

@@ -219,7 +219,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				JSON.stringify(
 					(
 						await db_req(
-							"SELECT * FROM reviews WHERE product = $1",
+							"SELECT * FROM reviews INNER JOIN users ON reviews.author=users.id WHERE product = $1",
 							[productId]
 						)
 					).rows

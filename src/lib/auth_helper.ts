@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 export const JWT_SECRET = "8311f12749bb5e66d0fbbca97bdfac63c7f074b26e";
 
 export interface IProfileStatus {
+  id: number;
   username?: string;
   isAdmin?: boolean;
   isLoggedIn?: boolean;
@@ -25,6 +26,7 @@ export interface IUser {
 export function GetProfileStatus(token: string): IProfileStatus {
   if (!token)
     return {
+      id: 0,
       username: "",
       isAdmin: false,
       isLoggedIn: false,
@@ -35,9 +37,10 @@ export function GetProfileStatus(token: string): IProfileStatus {
     let verification: any = jwt.verify(token.split(' ')[1], JWT_SECRET);
     if (typeof verification == 'string')
       throw "ERROR: Incorrect JWT"
-    return {username: verification.username ,isLoggedIn: true, isAdmin: verification.isadmin, error: ""};
+    return {id: verification.id, username: verification.username ,isLoggedIn: true, isAdmin: verification.isadmin, error: ""};
   } catch (error) {
     return {
+      id: 0,
       username: "",
       isAdmin: false,
       isLoggedIn: false,
