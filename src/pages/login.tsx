@@ -162,9 +162,7 @@ class LoginPage extends Component<LoginPageProps, LoginPageState> {
 				</div>
 				<div className={styles.signup}>
 					Har du ikke en konto?{" "}
-					<Link href="/signup" passHref>
-						Tilmeld dig her.
-					</Link>
+					<a href="/signup"> Tilmeld dig her.</a>
 				</div>
 				<div className={styles.loginButton}>
 					<Button
