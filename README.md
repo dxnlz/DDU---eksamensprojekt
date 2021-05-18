@@ -1,2 +1,2 @@
 # DDU - eksamensprojekt
-test
+Kildekoden til teknikfagsprojektet
