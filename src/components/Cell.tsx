@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import Link from 'next/link';
 
 export interface ICellProps {
-    id: number,
+    id: number;
     name: string;
     description: string;
     price: number;

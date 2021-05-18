@@ -121,14 +121,13 @@
 
 .productReview {
   flex: 1;
-
-    background-color: yellowgreen;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding: 0.5rem;
-    display: flex;
-    gap: 0.5rem;
-    flex-direction: column;
+  background-color: yellowgreen;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
 }
 
 .input {

@@ -42,36 +42,6 @@ class SignupPage extends Component<SignupPageProps, SignupPageState> {
 			termsAndConditions: false,
 		};
 	}
-	onSignup = async (event) => {
-		let user_data: IUser = {
-			id: 0,
-			username: "hedsao1",
-			registered: new Date(),
-			password: "abcdef",
-			isadmin: false,
-		};
-
-		try {
-			const loginApi = await fetch(`/api/signup`, {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(user_data),
-			});
-
-			let result = await loginApi.json();
-
-			if (result.success) {
-				Router.push("/login");
-			} else {
-				alert("Error: " + result.error);
-			}
-		} catch (error) {
-			alert("Error: " + error);
-		}
-	};
 
 	onSubmit = (event) => {
 		// We do some simple form validation, and prevent submission if errors are found

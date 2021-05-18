@@ -8,7 +8,10 @@ class Index extends Component {
 			<>
 				<main>
 					<h1 className={styles.title}>Webshop teknikfag</h1>
-					<code>Is this code???</code>
+					<p>Hej! Dette er hjemmesiden til teknikfagseksamen.</p>
+					<p>For at se produkterne, så skal man klikke på "Products" i navigationsbaren.</p>
+					<p>Hvis man vil søge, så kan man benytte søgebaren ovenover.</p>
+					<p>For at skrive produktanmeldelser kræver det at man har oprettet en bruger og er logget ind.</p>
 				</main>
 			</>
 		);

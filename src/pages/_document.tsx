@@ -1,12 +1,12 @@
 // FROM: https://github.com/manakuro/nextjs-styled-component-material-ui-example/blob/master/pages/_document.js
 // This file enables server side injection of stylesheets
 import React from 'react'
-import NextDocument from 'next/document'
+import NextDocument, { DocumentContext } from 'next/document'
 import { ServerStyleSheet as StyledComponentSheets } from 'styled-components'
 import { ServerStyleSheets as MaterialUiServerStyleSheets } from '@material-ui/core/styles'
 
 export default class Document extends NextDocument {
-  static async getInitialProps (ctx) {
+  static async getInitialProps (ctx: DocumentContext) {
     const styledComponentSheet = new StyledComponentSheets()
     const materialUiSheets = new MaterialUiServerStyleSheets()
     const originalRenderPage = ctx.renderPage

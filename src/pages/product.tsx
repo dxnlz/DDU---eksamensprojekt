@@ -69,6 +69,9 @@ export default class ProductPage extends Component<ProductPageProps> {
 						product: this.props.id,
 					}),
 				});
+
+				// Reload page after we get a response from the api request
+				setTimeout(()=> location.reload(), 100)
 			}
 		}
 	};
