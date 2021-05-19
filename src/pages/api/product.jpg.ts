@@ -23,5 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Return the image as binary data
     res.setHeader('Content-Type', 'image/jpg');
+    res.setHeader('Cache-Control', 'max-age=31536000'); // Cache the image for a year
     res.send(Buffer.from(image, 'base64'));
 };
